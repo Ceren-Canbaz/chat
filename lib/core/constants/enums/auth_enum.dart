@@ -1,5 +1,6 @@
 enum RegisterState {
   initial,
+  loading,
   success,
   error,
   passwordsDontMatch,
@@ -7,6 +8,7 @@ enum RegisterState {
 
 enum LoginState {
   initial,
+  loading,
   success,
   error,
 }
