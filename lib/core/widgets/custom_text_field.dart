@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatefulWidget {
-  const CustomTextField({
+class CustomTextField extends StatelessWidget {
+  CustomTextField({
     super.key,
     this.hintText = "",
     this.readOnly = false,
@@ -14,31 +14,25 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final Function(String value)? onSubmit;
   final Function(String value)? onChange;
-
-  @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
-}
-
-class _CustomTextFieldState extends State<CustomTextField> {
   final textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: textController,
       onSubmitted: (value) {
-        if (widget.onSubmit != null) {
-          widget.onSubmit!(value);
+        if (onSubmit != null) {
+          onSubmit!(value);
         }
       },
       onChanged: (value) {
-        if (widget.onChange != null) {
-          widget.onChange!(value);
+        if (onChange != null) {
+          onChange!(value);
         }
       },
-      readOnly: widget.readOnly,
-      obscureText: widget.obscureText,
+      readOnly: readOnly,
+      obscureText: obscureText,
       decoration: InputDecoration(
-        hintText: widget.hintText,
+        hintText: hintText,
       ),
     );
   }
