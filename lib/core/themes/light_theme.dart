@@ -1,4 +1,5 @@
 import 'package:chat/core/colors/app_colors.dart';
+import 'package:chat/core/themes/input_decoration_theme.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
@@ -14,6 +15,7 @@ ThemeData lightTheme = ThemeData(
     onSurface: AppColors.onSurface,
     onError: AppColors.onError,
   ),
+  inputDecorationTheme: inputdDcorationTheme,
   buttonTheme: const ButtonThemeData(
     buttonColor: AppColors.primary,
     textTheme: ButtonTextTheme.primary,

@@ -17,6 +17,7 @@ class LoginPage extends StatelessWidget {
               alignment: Alignment.center,
             ),
           ),
+          TextField()
         ],
       ),
     );
