@@ -7,18 +7,26 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: SvgPicture.asset(
-              "assets/svgs/chat.svg",
-              color: Theme.of(context).colorScheme.primary,
-              alignment: Alignment.center,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: SvgPicture.asset(
+                "assets/svgs/chat.svg",
+                color: Theme.of(context).colorScheme.primary,
+                alignment: Alignment.center,
+              ),
             ),
-          ),
-          TextField()
-        ],
+            const SizedBox(
+              height: 32,
+            ),
+            TextField(),
+          ],
+        ),
       ),
     );
   }
