@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'auth_state.dart';
 
-part 'auth_state.dart';
-
+// AuthCubit, durumları yönetir
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthLoginState());
+  AuthCubit() : super(AuthInitialState());
 }
