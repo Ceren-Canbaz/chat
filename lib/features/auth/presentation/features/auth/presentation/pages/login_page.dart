@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +29,22 @@ class LoginPage extends StatelessWidget {
               height: 32,
             ),
             CustomTextField(
+              textController: _emailController,
               hintText: "Email",
             ),
             const SizedBox(
               height: 24,
             ),
             CustomTextField(
+              textController: _passwordController,
               hintText: "Password",
               obscureText: true,
             ),
-            const Button(
+            Button(
               text: "Login",
+              onPressed: () {
+                ///call login method
+              },
             ),
           ],
         ),

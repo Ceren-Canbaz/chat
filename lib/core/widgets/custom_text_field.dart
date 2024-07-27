@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  CustomTextField({
+  const CustomTextField({
     super.key,
     this.hintText = "",
     this.readOnly = false,
     this.obscureText = false,
     this.onSubmit,
     this.onChange,
+    required this.textController,
   });
   final String hintText;
   final bool readOnly;
   final bool obscureText;
   final Function(String value)? onSubmit;
   final Function(String value)? onChange;
-  final textController = TextEditingController();
+  final TextEditingController textController;
   @override
   Widget build(BuildContext context) {
     return TextField(
