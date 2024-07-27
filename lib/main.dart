@@ -1,5 +1,6 @@
 import 'package:chat/core/themes/dark_theme.dart';
 import 'package:chat/core/themes/light_theme.dart';
+import 'package:chat/features/auth/presentation/features/auth/presentation/pages/auth_page.dart';
 import 'package:chat/features/auth/presentation/features/auth/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: lightTheme,
-      home: LoginPage(),
+      home: AuthPage(),
     );
   }
 }

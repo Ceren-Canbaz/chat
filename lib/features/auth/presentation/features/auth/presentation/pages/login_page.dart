@@ -1,6 +1,10 @@
+import 'package:chat/core/constants/enums/auth_enum.dart';
 import 'package:chat/core/widgets/custom_button.dart';
 import 'package:chat/core/widgets/custom_text_field.dart';
+import 'package:chat/features/auth/presentation/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:svg_flutter/svg.dart';
 
 class LoginPage extends StatelessWidget {
@@ -59,12 +63,17 @@ class LoginPage extends StatelessWidget {
                   "Dont have an account? ",
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                Text(
-                  "Register!",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                GestureDetector(
+                  onTap: () {
+                    context
+                        .read<AuthCubit>()
+                        .changePage(pageState: AuthPageState.register);
+                  },
+                  child: Text(
+                    "Register!",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                  ),
                 ),
               ],
             )
