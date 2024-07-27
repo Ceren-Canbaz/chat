@@ -28,12 +28,23 @@ class AuthCubit extends Cubit<AuthState> {
               passwordVerify: 'Passwords dont match',
               registerState: RegisterState.passwordsDontMatch));
     } else {
-      emit(AuthRegisterState(
+      emit(
+        AuthRegisterState(
           email: email,
           password: password,
           passwordVerify: passwordVerify,
           registerState: RegisterState.success,
-          pageState: AuthPageState.register));
+          pageState: AuthPageState.register,
+        ),
+      );
     }
+  }
+
+  void changePage({required AuthPageState pageState}) {
+    emit(
+      state.copyWith(
+        pageState: pageState,
+      ),
+    );
   }
 }

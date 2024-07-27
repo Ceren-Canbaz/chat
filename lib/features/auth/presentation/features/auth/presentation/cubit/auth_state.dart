@@ -5,16 +5,25 @@ import 'package:equatable/equatable.dart';
 abstract class AuthState extends Equatable {
   final AuthPageState pageState;
   const AuthState({required this.pageState});
+  AuthState copyWith({
+    AuthPageState? pageState,
+  });
 }
 
 class AuthInitialState extends AuthState {
   const AuthInitialState({required super.pageState});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
         super.pageState,
       ];
+
+  @override
+  AuthState copyWith({AuthPageState? pageState}) {
+    return AuthInitialState(
+      pageState: pageState ?? this.pageState,
+    );
+  }
 }
 
 // Login state
@@ -31,7 +40,7 @@ class AuthLoginState extends AuthState {
 
   @override
   List<Object?> get props => [email, password, loginState, super.pageState];
-
+  @override
   AuthLoginState copyWith(
       {String? email,
       String? password,
@@ -63,7 +72,7 @@ class AuthRegisterState extends AuthState {
   @override
   List<Object?> get props =>
       [email, password, passwordVerify, registerState, super.pageState];
-
+  @override
   AuthRegisterState copyWith({
     String? email,
     String? password,
