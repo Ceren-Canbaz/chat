@@ -12,3 +12,5 @@ enum LoginState {
   success,
   error,
 }
+
+enum AuthPageState { login, register, logged }
