@@ -1,5 +1,6 @@
+import 'package:chat/core/themes/dark_theme.dart';
 import 'package:chat/core/themes/light_theme.dart';
-import 'package:chat/features/auth/presentation/login_page.dart';
+import 'package:chat/features/auth/presentation/features/auth/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {

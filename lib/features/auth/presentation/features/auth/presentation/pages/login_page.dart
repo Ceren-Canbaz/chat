@@ -40,12 +40,34 @@ class LoginPage extends StatelessWidget {
               hintText: "Password",
               obscureText: true,
             ),
+            const SizedBox(
+              height: 24,
+            ),
             Button(
               text: "Login",
               onPressed: () {
                 ///call login method
               },
             ),
+            const SizedBox(
+              height: 24,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Dont have an account? ",
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                Text(
+                  "Register!",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Theme.of(context).colorScheme.primary),
+                ),
+              ],
+            )
           ],
         ),
       ),

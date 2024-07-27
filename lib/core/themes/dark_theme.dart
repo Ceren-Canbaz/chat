@@ -1,4 +1,7 @@
 import 'package:chat/core/colors/app_colors.dart';
+import 'package:chat/core/themes/button_theme.dart';
+import 'package:chat/core/themes/input_decoration_theme.dart';
+import 'package:chat/core/themes/text_theme.dart';
 import 'package:flutter/material.dart';
 
 ThemeData darkTheme = ThemeData(
@@ -14,8 +17,11 @@ ThemeData darkTheme = ThemeData(
     onSurface: AppColors.darkOnSurface,
     onError: AppColors.darkOnError,
   ),
+  textTheme: textTheme,
+  inputDecorationTheme: inputdDcorationTheme,
   buttonTheme: const ButtonThemeData(
-    buttonColor: AppColors.darkPrimary,
+    buttonColor: AppColors.primary,
     textTheme: ButtonTextTheme.primary,
   ),
+  elevatedButtonTheme: elevatedButtonTheme,
 );
