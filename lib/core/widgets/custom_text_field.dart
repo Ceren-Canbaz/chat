@@ -5,11 +5,13 @@ class CustomTextField extends StatefulWidget {
     super.key,
     this.hintText = "",
     this.readOnly = false,
+    this.obscureText = false,
     this.onSubmit,
     this.onChange,
   });
   final String hintText;
   final bool readOnly;
+  final bool obscureText;
   final Function(String value)? onSubmit;
   final Function(String value)? onChange;
 
@@ -34,6 +36,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         }
       },
       readOnly: widget.readOnly,
+      obscureText: widget.obscureText,
       decoration: InputDecoration(
         hintText: widget.hintText,
       ),

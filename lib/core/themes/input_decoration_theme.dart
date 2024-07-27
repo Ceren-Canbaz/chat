@@ -26,6 +26,6 @@ const inputdDcorationTheme = InputDecorationTheme(
   ),
   labelStyle: TextStyle(color: AppColors.onBackground),
   hintStyle: TextStyle(
-    color: AppColors.onBackground,
+    color: AppColors.primary,
   ),
 );
