@@ -1,3 +1,4 @@
+import 'package:chat/core/widgets/custom_button.dart';
 import 'package:chat/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg.dart';
@@ -25,15 +26,18 @@ class LoginPage extends StatelessWidget {
             const SizedBox(
               height: 32,
             ),
-            const CustomTextField(
+            CustomTextField(
               hintText: "Email",
             ),
             const SizedBox(
               height: 24,
             ),
-            const CustomTextField(
+            CustomTextField(
               hintText: "Password",
               obscureText: true,
+            ),
+            const Button(
+              text: "Login",
             ),
           ],
         ),

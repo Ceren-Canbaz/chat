@@ -23,4 +23,7 @@ class AppColors {
   static const Color darkOnBackground = Color(0xFFFFFFFF);
   static const Color darkOnSurface = Color(0xFFFFFFFF);
   static const Color darkOnError = Color(0xFF000000);
+
+  static const Color disabledButtonColor = Color(0xFFBDBDBD);
+  static const Color disabledButtonTextColor = Color(0xFF757575);
 }
