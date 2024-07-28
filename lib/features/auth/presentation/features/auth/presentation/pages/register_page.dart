@@ -28,8 +28,14 @@ class RegisterPage extends StatelessWidget {
                 alignment: Alignment.center,
               ),
             ),
-            const SizedBox(
-              height: 32,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Text(
+                "Create Account",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
             ),
             CustomTextField(
               textController: _emailController,
@@ -77,7 +83,7 @@ class RegisterPage extends StatelessWidget {
                         );
                   },
                   child: Text(
-                    "Login!!",
+                    "Login!",
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.primary),
                   ),

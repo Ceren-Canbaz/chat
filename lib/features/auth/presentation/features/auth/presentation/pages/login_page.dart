@@ -29,8 +29,14 @@ class LoginPage extends StatelessWidget {
                 alignment: Alignment.center,
               ),
             ),
-            const SizedBox(
-              height: 32,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Text(
+                "Sign in",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
             ),
             CustomTextField(
               textController: _emailController,
