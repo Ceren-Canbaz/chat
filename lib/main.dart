@@ -1,10 +1,14 @@
-import 'package:chat/core/themes/dark_theme.dart';
 import 'package:chat/core/themes/light_theme.dart';
 import 'package:chat/features/auth/presentation/features/auth/presentation/pages/auth_page.dart';
-import 'package:chat/features/auth/presentation/features/auth/presentation/pages/login_page.dart';
+import 'package:chat/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(const MyApp());
 }
 
