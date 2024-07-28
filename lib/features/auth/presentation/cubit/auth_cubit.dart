@@ -25,30 +25,25 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     } else {
-      try {
-        emit(
-          state.copyWith(
-            requestState: RequestState.loading,
-          ),
-        );
-        final user =
-            await _authRepository.signIn(email: email, password: password);
-
-        emit(
-          state.copyWith(
-            requestState: RequestState.loaded,
-          ),
-        );
-      } catch (e) {
-        emit(
-          state.copyWith(
-            requestState: RequestState.error,
-            message: e.toString(),
-
-            ///TODO:create an error handler
-          ),
-        );
-      }
+      emit(
+        state.copyWith(
+          requestState: RequestState.loading,
+        ),
+      );
+      final result =
+          await _authRepository.signIn(email: email, password: password);
+      result.fold(
+          (l) => emit(
+                state.copyWith(
+                  requestState: RequestState.error,
+                  message: l.message,
+                ),
+              ),
+          (r) => emit(
+                state.copyWith(
+                  requestState: RequestState.loaded,
+                ),
+              ));
     }
   }
 
@@ -60,30 +55,26 @@ class AuthCubit extends Cubit<AuthState> {
           message: "Passwords don't match",
         ));
       } else {
-        try {
-          emit(
+        emit(
+          state.copyWith(
+            requestState: RequestState.loading,
+          ),
+        );
+        final result =
+            await _authRepository.signUp(email: email, password: password);
+        result.fold(
+          (l) => emit(
             state.copyWith(
-              requestState: RequestState.loading,
+              requestState: RequestState.error,
+              message: l.message,
             ),
-          );
-          final user =
-              await _authRepository.signUp(email: email, password: password);
-
-          emit(
+          ),
+          (r) => emit(
             state.copyWith(
               requestState: RequestState.loaded,
             ),
-          );
-        } catch (e) {
-          emit(
-            state.copyWith(
-              requestState: RequestState.error,
-              message: e.toString(),
-
-              ///TODO:create an error handler
-            ),
-          );
-        }
+          ),
+        );
       }
     } else {
       emit(
@@ -101,15 +92,16 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logOut() async {
-    try {
-      await _authRepository.logOut();
-    } catch (e) {
-      emit(
-        state.copyWith(
-          requestState: RequestState.error,
-          message: "An error occured while logging out",
-        ),
-      );
-    }
+    final result = await _authRepository.logOut();
+    result.fold(
+        (l) => emit(
+              state.copyWith(
+                  requestState: RequestState.error, message: l.message),
+            ),
+        (r) => emit(
+              state.copyWith(
+                requestState: RequestState.loaded,
+              ),
+            ));
   }
 }
