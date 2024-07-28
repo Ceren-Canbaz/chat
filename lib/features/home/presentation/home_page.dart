@@ -1,15 +1,8 @@
-import 'package:chat/core/widgets/drawer_item.dart';
-import 'package:chat/features/auth/domain/auth_repository.dart';
-import 'package:chat/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:chat/features/auth/presentation/cubit/auth_state.dart';
-
-import 'package:chat/features/settings/settings_page.dart';
+import 'package:chat/core/widgets/user_tile.dart';
+import 'package:chat/features/chat/service/chat_service.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:svg_flutter/svg.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -32,6 +25,43 @@ class HomePage extends StatelessWidget {
           "Home",
         ),
       ),
+      body: _buildUserList(),
     );
   }
+}
+
+Widget _buildUserList() {
+  return StreamBuilder(
+    stream: locator<ChatService>().getUsersStream(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const CircularProgressIndicator();
+      }
+
+      if (snapshot.hasError) {
+        return const Text("Something Went Wrong");
+
+        ///TODO:Fix that with error handler
+      }
+      return ListView(
+        children: snapshot.data!
+            .map(
+              (e) => _buildUserListItem(
+                e,
+              ),
+            )
+            .toList(),
+      );
+    },
+  );
+}
+
+///TODO: Map item must be changed with entity
+Widget _buildUserListItem(Map<String, dynamic> userData) {
+  return UserTile(
+    username: userData["email"],
+    onTap: () {
+      //navigate chat page
+    },
+  );
 }
