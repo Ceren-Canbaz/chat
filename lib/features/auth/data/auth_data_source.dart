@@ -47,7 +47,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       {required String email, required String password}) async {
     try {
       final UserCredential userCredential = await _auth
-          .signInWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
