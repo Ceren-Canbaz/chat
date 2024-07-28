@@ -33,17 +33,18 @@ class AuthCubit extends Cubit<AuthState> {
       final result =
           await _authRepository.signIn(email: email, password: password);
       result.fold(
-          (l) => emit(
-                state.copyWith(
-                  requestState: RequestState.error,
-                  message: l.message,
-                ),
-              ),
-          (r) => emit(
-                state.copyWith(
-                  requestState: RequestState.loaded,
-                ),
-              ));
+        (l) => emit(
+          state.copyWith(
+            requestState: RequestState.error,
+            message: l.message,
+          ),
+        ),
+        (r) => emit(
+          state.copyWith(
+            requestState: RequestState.loaded,
+          ),
+        ),
+      );
     }
   }
 
