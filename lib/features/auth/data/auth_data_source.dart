@@ -1,4 +1,5 @@
 import 'package:chat/core/handlers/request_handler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,6 +14,7 @@ abstract class AuthDataSource {
 @LazySingleton(as: AuthDataSource)
 class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RequestHandler _requestHandler = RequestHandler();
   @override
   Future<UserCredential> signIn(
@@ -23,7 +25,10 @@ class AuthDataSourceImpl implements AuthDataSource {
         email: email,
         password: password,
       );
-
+      _firestore.collection("Users").doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'email': userCredential.user!.email
+      });
       return userCredential;
     });
   }
@@ -42,6 +47,10 @@ class AuthDataSourceImpl implements AuthDataSource {
       () async {
         final UserCredential userCredential = await _auth
             .createUserWithEmailAndPassword(email: email, password: password);
+        _firestore.collection("Users").doc(userCredential.user!.uid).set({
+          'uid': userCredential.user!.uid,
+          'email': userCredential.user!.email
+        });
 
         return userCredential;
       },
