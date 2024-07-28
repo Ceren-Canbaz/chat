@@ -18,7 +18,7 @@ class AuthState extends Equatable {
   }) {
     return AuthState(
         pageState: pageState ?? this.pageState,
-        message: message ?? this.message,
+        message: message ?? "",
         requestState: requestState ?? this.requestState);
   }
 
