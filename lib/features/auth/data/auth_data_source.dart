@@ -13,11 +13,11 @@ abstract class AuthDataSource {
 @LazySingleton(as: AuthDataSource)
 class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  final RequestHandler _requestHandler = RequestHandler();
   @override
   Future<UserCredential> signIn(
       {required String email, required String password}) async {
-    try {
+    return await _requestHandler.call(() async {
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
         email: email,
@@ -25,34 +25,26 @@ class AuthDataSourceImpl implements AuthDataSource {
       );
 
       return userCredential;
-    } catch (_) {
-      rethrow;
-    }
+    });
   }
 
   @override
   Future<void> logOut() async {
-    try {
+    return await _requestHandler.call(() async {
       return await _auth.signOut();
-    } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
-    } catch (_) {
-      rethrow;
-    }
+    });
   }
 
   @override
   Future<UserCredential> signUp(
       {required String email, required String password}) async {
-    try {
-      final UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+    return await _requestHandler.call(
+      () async {
+        final UserCredential userCredential = await _auth
+            .createUserWithEmailAndPassword(email: email, password: password);
 
-      return userCredential;
-    } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
-    } catch (_) {
-      rethrow;
-    }
+        return userCredential;
+      },
+    );
   }
 }
