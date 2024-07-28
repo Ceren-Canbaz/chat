@@ -8,18 +8,18 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.onSubmit,
     this.onChange,
-    required this.textController,
+    required this.controller,
   });
   final String hintText;
   final bool readOnly;
   final bool obscureText;
   final Function(String value)? onSubmit;
   final Function(String value)? onChange;
-  final TextEditingController textController;
+  final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: textController,
+      controller: controller,
       onSubmitted: (value) {
         if (onSubmit != null) {
           onSubmit!(value);

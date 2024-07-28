@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
       decoration: BoxDecoration(
         color: onPressed != null
             ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.secondary,
+            : Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
         borderRadius: BorderRadius.circular(
           6,
         ),

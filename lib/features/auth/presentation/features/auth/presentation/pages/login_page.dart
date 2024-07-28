@@ -3,7 +3,7 @@ import 'package:chat/core/widgets/custom_button.dart';
 import 'package:chat/core/widgets/custom_text_field.dart';
 import 'package:chat/features/auth/presentation/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:svg_flutter/svg.dart';
 
@@ -39,14 +39,14 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             CustomTextField(
-              textController: _emailController,
+              controller: _emailController,
               hintText: "Email",
             ),
             const SizedBox(
               height: 24,
             ),
             CustomTextField(
-              textController: _passwordController,
+              controller: _passwordController,
               hintText: "Password",
               obscureText: true,
             ),
@@ -55,9 +55,6 @@ class LoginPage extends StatelessWidget {
             ),
             Button(
               text: "Login",
-              onPressed: () {
-                ///call login method
-              },
             ),
             const SizedBox(
               height: 24,
