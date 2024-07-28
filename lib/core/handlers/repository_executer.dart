@@ -14,39 +14,32 @@ class RepositoryExecuter {
     try {
       final T response = await sourceCall();
       return Right(response);
-    } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case 'invalid-email':
-          return Left(InvalidEmailFailure());
-        case 'user-disabled':
-          return Left(UserDisabledFailure());
-        case 'user-not-found':
-          return Left(UserNotFoundFailure());
-        case 'wrong-password':
-          return Left(WrongPasswordFailure());
-        case 'email-already-in-use':
-          return Left(EmailAlreadyInUseFailure());
-        case 'weak-password':
-          return Left(WeakPasswordFailure());
-        case 'operation-not-allowed':
-          return Left(OperationNotAllowedFailure());
-        case 'network-request-failed':
-          return Left(NetworkRequestFailedFailure());
-        case 'too-many-requests':
-          return Left(TooManyRequestsFailure());
-        case 'user-token-expired':
-          return Left(UserTokenExpiredFailure());
-        default:
-          return Left(UnknownFailure());
-      }
-    } on JsonParsingException catch (_) {
-      return Left(
-        JsonParsingFailure(),
-      );
     } catch (e) {
-      return Left(
-        UnknownFailure(),
-      );
+      if (e is InvalidEmailException) {
+        return Left(InvalidEmailFailure());
+      } else if (e is UserDisabledException) {
+        return Left(UserDisabledFailure());
+      } else if (e is UserNotFoundException) {
+        return Left(UserNotFoundFailure());
+      } else if (e is WrongPasswordException) {
+        return Left(WrongPasswordFailure());
+      } else if (e is EmailAlreadyInUseException) {
+        return Left(EmailAlreadyInUseFailure());
+      } else if (e is WeakPasswordException) {
+        return Left(WeakPasswordFailure());
+      } else if (e is OperationNotAllowedException) {
+        return Left(OperationNotAllowedFailure());
+      } else if (e is NetworkRequestFailedException) {
+        return Left(NetworkRequestFailedFailure());
+      } else if (e is TooManyRequestsException) {
+        return Left(TooManyRequestsFailure());
+      } else if (e is UserTokenExpiredException) {
+        return Left(UserTokenExpiredFailure());
+      } else if (e is JsonParsingException) {
+        return Left(JsonParsingFailure());
+      } else {
+        return Left(UnknownFailure());
+      }
     }
   }
 
@@ -54,13 +47,33 @@ class RepositoryExecuter {
     Future<void> Function() sourceCall,
   ) async {
     try {
-      return await sourceCall();
-    } on FirebaseAuthException catch (e) {
-      throw _mapFirebaseAuthExceptionToFailure(e);
-    } on JsonParsingException catch (_) {
-      throw JsonParsingFailure();
+      await sourceCall();
     } catch (e) {
-      throw UnknownFailure();
+      if (e is InvalidEmailException) {
+        throw InvalidEmailFailure();
+      } else if (e is UserDisabledException) {
+        throw UserDisabledFailure();
+      } else if (e is UserNotFoundException) {
+        throw UserNotFoundFailure();
+      } else if (e is WrongPasswordException) {
+        throw WrongPasswordFailure();
+      } else if (e is EmailAlreadyInUseException) {
+        throw EmailAlreadyInUseFailure();
+      } else if (e is WeakPasswordException) {
+        throw WeakPasswordFailure();
+      } else if (e is OperationNotAllowedException) {
+        throw OperationNotAllowedFailure();
+      } else if (e is NetworkRequestFailedException) {
+        throw NetworkRequestFailedFailure();
+      } else if (e is TooManyRequestsException) {
+        throw TooManyRequestsFailure();
+      } else if (e is UserTokenExpiredException) {
+        throw UserTokenExpiredFailure();
+      } else if (e is JsonParsingException) {
+        throw JsonParsingFailure();
+      } else {
+        throw UnknownFailure();
+      }
     }
   }
 
@@ -70,39 +83,32 @@ class RepositoryExecuter {
     try {
       final T response = await sourceCall();
       return response;
-    } on FirebaseAuthException catch (e) {
-      throw _mapFirebaseAuthExceptionToFailure(e);
-    } on JsonParsingException catch (_) {
-      throw JsonParsingFailure();
     } catch (e) {
-      throw UnknownFailure();
-    }
-  }
-
-  Failure _mapFirebaseAuthExceptionToFailure(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'invalid-email':
-        return InvalidEmailFailure();
-      case 'user-disabled':
-        return UserDisabledFailure();
-      case 'user-not-found':
-        return UserNotFoundFailure();
-      case 'wrong-password':
-        return WrongPasswordFailure();
-      case 'email-already-in-use':
-        return EmailAlreadyInUseFailure();
-      case 'weak-password':
-        return WeakPasswordFailure();
-      case 'operation-not-allowed':
-        return OperationNotAllowedFailure();
-      case 'network-request-failed':
-        return NetworkRequestFailedFailure();
-      case 'too-many-requests':
-        return TooManyRequestsFailure();
-      case 'user-token-expired':
-        return UserTokenExpiredFailure();
-      default:
-        return UnknownFailure();
+      if (e is InvalidEmailException) {
+        throw InvalidEmailFailure();
+      } else if (e is UserDisabledException) {
+        throw UserDisabledFailure();
+      } else if (e is UserNotFoundException) {
+        throw UserNotFoundFailure();
+      } else if (e is WrongPasswordException) {
+        throw WrongPasswordFailure();
+      } else if (e is EmailAlreadyInUseException) {
+        throw EmailAlreadyInUseFailure();
+      } else if (e is WeakPasswordException) {
+        throw WeakPasswordFailure();
+      } else if (e is OperationNotAllowedException) {
+        throw OperationNotAllowedFailure();
+      } else if (e is NetworkRequestFailedException) {
+        throw NetworkRequestFailedFailure();
+      } else if (e is TooManyRequestsException) {
+        throw TooManyRequestsFailure();
+      } else if (e is UserTokenExpiredException) {
+        throw UserTokenExpiredFailure();
+      } else if (e is JsonParsingException) {
+        throw JsonParsingFailure();
+      } else {
+        throw UnknownFailure();
+      }
     }
   }
 }
