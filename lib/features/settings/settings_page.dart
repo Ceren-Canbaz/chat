@@ -1,4 +1,4 @@
-import 'package:chat/ui/drawer/app_drawer.dart';
+import 'package:chat/ui/app_drawer.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {

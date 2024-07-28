@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:chat/core/exceptions/exceptions.dart';
 import 'package:chat/core/failures/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:injectable/injectable.dart';
 
-@singleton
 class RepositoryExecuter {
   Future<Either<Failure, T>> executeWithError<T>(
     Future<T> Function() sourceCall,

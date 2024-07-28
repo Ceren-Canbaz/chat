@@ -13,6 +13,7 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../features/auth/data/auth_data_source.dart' as _i3;
 import '../../features/auth/domain/auth_repository.dart' as _i4;
+import '../../features/chat/service/chat_service.dart' as _i5;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -28,6 +29,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i3.AuthDataSource>(() => _i3.AuthDataSourceImpl());
     gh.lazySingleton<_i4.AuthRepository>(
         () => _i4.AuthRepositoryImpl(src: gh<_i3.AuthDataSource>()));
+    gh.lazySingleton<_i5.ChatService>(() => _i5.ChatServiceImpl());
     return this;
   }
 }

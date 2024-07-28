@@ -5,7 +5,7 @@ import 'package:chat/features/auth/presentation/cubit/auth_state.dart';
 
 import 'package:chat/features/settings/settings_page.dart';
 import 'package:chat/services/injectable/injectable.dart';
-import 'package:chat/ui/drawer/app_drawer.dart';
+import 'package:chat/ui/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
