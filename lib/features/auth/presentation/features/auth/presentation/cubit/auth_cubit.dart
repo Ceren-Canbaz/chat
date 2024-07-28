@@ -12,13 +12,23 @@ class AuthCubit extends Cubit<AuthState> {
         );
 
   void login(String email, String password) {
-    emit(AuthLoginState(
-      email: email,
-      password: password,
-      loginState: LoginState.initial,
-      pageState: AuthPageState.login,
-      message: "",
-    ));
+    if (email.trim() == "" || password.trim() == "") {
+      emit(AuthLoginState(
+        email: email,
+        password: password,
+        loginState: LoginState.error,
+        pageState: AuthPageState.login,
+        message: "All fields must be filled out", // make constant,
+      ));
+    } else {
+      emit(AuthLoginState(
+        email: email,
+        password: password,
+        loginState: LoginState.initial,
+        pageState: AuthPageState.login,
+        message: "", // make constant
+      ));
+    }
   }
 
   Future<void> register(
@@ -26,13 +36,13 @@ class AuthCubit extends Cubit<AuthState> {
     if (email.trim() != "") {
       if (password != passwordVerify) {
         emit(AuthRegisterState(
-                email: email,
-                password: password,
-                passwordVerify: passwordVerify,
-                registerState: RegisterState.initial,
-                pageState: AuthPageState.register,
-                message: "")
-            .copyWith(
+          email: email,
+          password: password,
+          passwordVerify: passwordVerify,
+          registerState: RegisterState.initial,
+          pageState: AuthPageState.register,
+          message: "",
+        ).copyWith(
           password: password,
           passwordVerify: passwordVerify,
           registerState: RegisterState.error,

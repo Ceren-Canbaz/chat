@@ -55,6 +55,11 @@ class LoginPage extends StatelessWidget {
             ),
             Button(
               text: "Login",
+              onPressed: () {
+                context
+                    .read<AuthCubit>()
+                    .login(_emailController.text, _passwordController.text);
+              },
             ),
             const SizedBox(
               height: 24,
