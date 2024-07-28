@@ -1,0 +1,80 @@
+
+Documentation: Architecture and Error Handling
+
+Overview
+
+This document describes the architecture of the application, focusing on the interaction between the `RequestHandler`, `DataSource`, `Repository`, and `RepositoryExecuter`. It also outlines how errors are managed within this architecture.
+
+### Components
+
+1. **RequestHandler**
+   - The `RequestHandler` is responsible for initiating requests to the data source. It processes input and invokes methods on the `DataSource` to fetch or manipulate data.
+   - **Error Handling**: The `RequestHandler` may encounter exceptions from the `DataSource`. These exceptions are propagated back to the `Repository` layer.
+
+2. **DataSource**
+   - The `DataSource` contains methods that interact with external services or databases. It performs actual data operations, such as fetching, updating, or deleting records.
+   - **Error Handling**: The `DataSource` may throw exceptions related to data operations, such as network issues or server errors. These exceptions are thrown as specific exceptions (e.g., `FirebaseAuthException`, `JsonParsingException`) and must be handled properly.
+
+3. **Repository**
+   - The `Repository` acts as an intermediary between the `RequestHandler` and the `DataSource`. It uses the `RepositoryExecuter` to manage errors and transform them into domain-specific failure types.
+   - **Error Handling**: The `Repository` relies on the `RepositoryExecuter` to handle exceptions thrown by the `DataSource` and convert them into appropriate `Failure` types.
+
+4. **RepositoryExecuter**
+   - The `RepositoryExecuter` is responsible for executing functions with error handling. It captures exceptions thrown by the `DataSource` and maps them to corresponding failure types.
+   - **Methods**:
+     - `executeWithError<T>(Future<T> Function() sourceCall)`: Executes the `sourceCall` function and handles any errors, returning an `Either<Failure, T>` where `Failure` represents the error, and `T` is the result.
+     - `executeVoid(Future<void> Function() sourceCall)`: Executes the `sourceCall` function and throws exceptions as `Failure` types.
+     - `executeWithoutError<T>(Future<T> Function() sourceCall)`: Executes the `sourceCall` function and throws exceptions as `Failure` types.
+   - **Error Mapping**: The `RepositoryExecuter` contains a method (`_mapExceptionToFailure`) that maps specific exceptions to `Failure` types based on the exception type and error code.
+
+### Error Handling Process
+
+1. **From DataSource to RepositoryExecuter**
+   - When a method in the `DataSource` throws an exception, it is caught by the `RepositoryExecuter`.
+   - The `RepositoryExecuter` uses the `_mapExceptionToFailure` method to convert exceptions into `Failure` types. 
+
+2. **From RepositoryExecuter to Repository**
+   - The `Repository` calls the `RepositoryExecuter` methods to execute data operations.
+   - Based on the results from `RepositoryExecuter`, the `Repository` either processes the data or handles the failure.
+
+3. **Handling in RequestHandler**
+   - The `RequestHandler` calls methods in the `Repository` and handles any results or failures propagated by the `Repository`.
+
+### Example Usage
+
+Here's an example of how a `Repository` method might use the `RepositoryExecuter`:
+
+```dart
+class ExampleRepository {
+  final RepositoryExecuter _executer;
+
+  ExampleRepository(this._executer);
+
+  Future<Either<Failure, Data>> fetchData() {
+    return _executer.executeWithError(() async {
+      // Simulate data fetching
+      return await dataSource.getData();
+    });
+  }
+}
+
+class ExampleDataSource {
+  final RequestHandler _requestHandler;
+
+  ExampleDataSource(this._executer);
+
+  Future<Data>> fetchData() {
+    return _requestHandler.call(() async {
+      
+      return await apiCall;
+    });
+  }
+}
+
+
+```
+
+### Conclusion
+
+This architecture ensures that exceptions are handled at the appropriate layer and are transformed into meaningful `Failure` types. This separation of concerns allows for a clean and manageable codebase, with clear paths for error handling and data processing.
+
