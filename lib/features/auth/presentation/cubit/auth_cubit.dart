@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:chat/core/constants/enums/auth_enum.dart';
+import 'package:chat/core/constants/enums/request_enum.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'auth_state.dart';
 
@@ -9,41 +10,44 @@ class AuthCubit extends Cubit<AuthState> {
     required AuthRepository authRepository,
   })  : _authRepository = authRepository,
         super(
-          const AuthInitialState(
+          const AuthState(
             pageState: AuthPageState.login,
             message: "",
+            requestState: RequestState.initial,
           ),
         );
 
   Future<void> login(String email, String password) async {
     if (email.trim() == "" || password.trim() == "") {
-      emit(AuthLoginState(
-        email: email,
-        password: password,
-        loginState: LoginState.error,
-        pageState: AuthPageState.login,
-        message: "All fields must be filled out", // make constant,
-      ));
+      emit(
+        state.copyWith(
+          message: "All fields must be filled out",
+        ),
+      );
     } else {
       try {
+        emit(
+          state.copyWith(
+            requestState: RequestState.loading,
+          ),
+        );
         final user =
             await _authRepository.signIn(email: email, password: password);
 
-        emit(AuthLoginState(
-          email: email,
-          password: password,
-          loginState: LoginState.success,
-          pageState: AuthPageState.logged,
-          message: "logged", // make constant
-        ));
-      } catch (_) {
-        emit(AuthLoginState(
-          email: email,
-          password: password,
-          loginState: LoginState.error,
-          pageState: AuthPageState.login,
-          message: "", // make constant
-        ));
+        emit(
+          state.copyWith(
+            requestState: RequestState.loaded,
+          ),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+            requestState: RequestState.error,
+            message: e.toString(),
+
+            ///TODO:create an error handler
+          ),
+        );
       }
     }
   }
@@ -52,38 +56,15 @@ class AuthCubit extends Cubit<AuthState> {
       String email, String password, String passwordVerify) async {
     if (email.trim() != "") {
       if (password != passwordVerify) {
-        emit(AuthRegisterState(
-          email: email,
-          password: password,
-          passwordVerify: passwordVerify,
-          registerState: RegisterState.initial,
-          pageState: AuthPageState.register,
-          message: "",
-        ).copyWith(
-          password: password,
-          passwordVerify: passwordVerify,
-          registerState: RegisterState.error,
+        emit(state.copyWith(
           message: "Passwords don't match",
         ));
       } else {
-        emit(
-          AuthRegisterState(
-              email: email,
-              password: password,
-              passwordVerify: passwordVerify,
-              registerState: RegisterState.success,
-              pageState: AuthPageState.register,
-              message: ""),
-        );
+        ///register method
       }
     } else {
       emit(
-        AuthRegisterState(
-          email: email,
-          password: password,
-          passwordVerify: passwordVerify,
-          pageState: AuthPageState.register,
-          registerState: RegisterState.error,
+        state.copyWith(
           message: "All fields must be filled out",
         ),
       );
