@@ -76,4 +76,17 @@ class AuthCubit extends Cubit<AuthState> {
       state.copyWith(pageState: pageState, message: ""),
     );
   }
+
+  Future<void> logOut() async {
+    try {
+      await _authRepository.logOut();
+    } catch (e) {
+      emit(
+        state.copyWith(
+          requestState: RequestState.error,
+          message: "An error occured while logging out",
+        ),
+      );
+    }
+  }
 }

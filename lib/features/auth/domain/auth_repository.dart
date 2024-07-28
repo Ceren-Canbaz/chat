@@ -6,6 +6,7 @@ abstract class AuthRepository {
   ///use dartz
   Future<UserCredential> signIn(
       {required String email, required String password});
+  Future<void> logOut();
 }
 
 @LazySingleton(as: AuthRepository)
@@ -17,5 +18,10 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<UserCredential> signIn(
       {required String email, required String password}) async {
     return await _src.signIn(email: email, password: password);
+  }
+
+  @override
+  Future<void> logOut() async {
+    return await _src.logOut();
   }
 }

@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 abstract class AuthDataSource {
   Future<UserCredential> signIn(
       {required String email, required String password});
+  Future<void> logOut();
 }
 
 @LazySingleton(as: AuthDataSource)
@@ -21,6 +22,17 @@ class AuthDataSourceImpl implements AuthDataSource {
       );
 
       return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> logOut() async {
+    try {
+      return await _auth.signOut();
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     } catch (_) {

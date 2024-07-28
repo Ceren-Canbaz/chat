@@ -1,4 +1,5 @@
 import 'package:chat/core/themes/light_theme.dart';
+import 'package:chat/features/auth/presentation/pages/auth_gate.dart';
 import 'package:chat/features/auth/presentation/pages/auth_page.dart';
 import 'package:chat/firebase_options.dart';
 import 'package:chat/services/injectable.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: lightTheme,
-      home: const AuthPage(),
+      home: const AuthGate(),
     );
   }
 }
