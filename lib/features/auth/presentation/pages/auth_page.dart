@@ -1,4 +1,6 @@
 import 'package:chat/core/constants/enums/auth_enum.dart';
+import 'package:chat/features/auth/data/auth_data_source.dart';
+import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'package:chat/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:chat/features/auth/presentation/cubit/auth_state.dart';
 import 'package:chat/features/auth/presentation/pages/login_page.dart';
@@ -12,7 +14,13 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthCubit(),
+      create: (context) => AuthCubit(
+        authRepository: AuthRepositoryImpl(
+          src: AuthDataSourceImpl(),
+        ),
+      ),
+
+      ///TODO: Fix this dependency injection with getit.
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state.pageState == AuthPageState.login) {

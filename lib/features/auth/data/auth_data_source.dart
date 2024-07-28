@@ -17,6 +17,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         email: email,
         password: password,
       );
+
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);

@@ -1,17 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:chat/core/constants/enums/auth_enum.dart';
+import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit()
-      : super(
+  final AuthRepository _authRepository;
+  AuthCubit({
+    required AuthRepository authRepository,
+  })  : _authRepository = authRepository,
+        super(
           const AuthInitialState(
             pageState: AuthPageState.login,
             message: "",
           ),
         );
 
-  void login(String email, String password) {
+  Future<void> login(String email, String password) async {
     if (email.trim() == "" || password.trim() == "") {
       emit(AuthLoginState(
         email: email,
@@ -21,13 +25,26 @@ class AuthCubit extends Cubit<AuthState> {
         message: "All fields must be filled out", // make constant,
       ));
     } else {
-      emit(AuthLoginState(
-        email: email,
-        password: password,
-        loginState: LoginState.initial,
-        pageState: AuthPageState.login,
-        message: "", // make constant
-      ));
+      try {
+        final user =
+            await _authRepository.signIn(email: email, password: password);
+
+        emit(AuthLoginState(
+          email: email,
+          password: password,
+          loginState: LoginState.success,
+          pageState: AuthPageState.logged,
+          message: "logged", // make constant
+        ));
+      } catch (_) {
+        emit(AuthLoginState(
+          email: email,
+          password: password,
+          loginState: LoginState.error,
+          pageState: AuthPageState.login,
+          message: "", // make constant
+        ));
+      }
     }
   }
 
