@@ -60,7 +60,30 @@ class AuthCubit extends Cubit<AuthState> {
           message: "Passwords don't match",
         ));
       } else {
-        ///register method
+        try {
+          emit(
+            state.copyWith(
+              requestState: RequestState.loading,
+            ),
+          );
+          final user =
+              await _authRepository.signUp(email: email, password: password);
+
+          emit(
+            state.copyWith(
+              requestState: RequestState.loaded,
+            ),
+          );
+        } catch (e) {
+          emit(
+            state.copyWith(
+              requestState: RequestState.error,
+              message: e.toString(),
+
+              ///TODO:create an error handler
+            ),
+          );
+        }
       }
     } else {
       emit(

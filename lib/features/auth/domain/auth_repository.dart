@@ -7,6 +7,8 @@ abstract class AuthRepository {
   Future<UserCredential> signIn(
       {required String email, required String password});
   Future<void> logOut();
+  Future<UserCredential> signUp(
+      {required String email, required String password});
 }
 
 @LazySingleton(as: AuthRepository)
@@ -23,5 +25,11 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<void> logOut() async {
     return await _src.logOut();
+  }
+
+  @override
+  Future<UserCredential> signUp(
+      {required String email, required String password}) async {
+    return await _src.signIn(email: email, password: password);
   }
 }
