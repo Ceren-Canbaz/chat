@@ -14,96 +14,95 @@ class RegisterPage extends StatelessWidget {
   final _passwordVerifyController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        return Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: SvgPicture.asset(
+                "assets/svgs/chat.svg",
+                color: Theme.of(context).colorScheme.primary,
+                alignment: Alignment.center,
+              ),
             ),
-            child: Column(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Text(
+                "Create Account",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+            ),
+            CustomTextField(
+              controller: _emailController,
+              hintText: "Email",
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            CustomTextField(
+              controller: _passwordController,
+              hintText: "Password",
+              obscureText: true,
+            ),
+            const SizedBox(
+              height: 24,
+            ),
+            CustomTextField(
+              controller: _passwordVerifyController,
+              hintText: "Verify Password",
+              obscureText: true,
+            ),
+            BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+              if ((state).message != "") {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: Text(state.message),
+                );
+              } else {
+                return Container();
+              }
+            }),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Button(
+                  text: "Register",
+                  onPressed: () async {
+                    await context.read<AuthCubit>().register(
+                        _emailController.text,
+                        _passwordController.text,
+                        _passwordVerifyController.text);
+                  }),
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: SvgPicture.asset(
-                    "assets/svgs/chat.svg",
-                    color: Theme.of(context).colorScheme.primary,
-                    alignment: Alignment.center,
-                  ),
+                Text(
+                  "Do you have an account already? ",
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24),
+                GestureDetector(
+                  onTap: () {
+                    context.read<AuthCubit>().changePage(
+                          pageState: AuthPageState.login,
+                        );
+                  },
                   child: Text(
-                    "Create Account",
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
+                    "Login!",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
                   ),
-                ),
-                CustomTextField(
-                  controller: _emailController,
-                  hintText: "Email",
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                CustomTextField(
-                  controller: _passwordController,
-                  hintText: "Password",
-                  obscureText: true,
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                CustomTextField(
-                  controller: _passwordVerifyController,
-                  hintText: "Verify Password",
-                  obscureText: true,
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                if ((state).message != "") Text(state.message),
-                const SizedBox(
-                  height: 24,
-                ),
-                Button(
-                    text: "Register",
-                    onPressed: () async {
-                      await context.read<AuthCubit>().register(
-                          _emailController.text,
-                          _passwordController.text,
-                          _passwordVerifyController.text);
-                    }),
-                const SizedBox(
-                  height: 24,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Do you have an account already? ",
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context.read<AuthCubit>().changePage(
-                              pageState: AuthPageState.login,
-                            );
-                      },
-                      child: Text(
-                        "Login!",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

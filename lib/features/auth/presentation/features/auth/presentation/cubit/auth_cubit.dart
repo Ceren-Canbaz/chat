@@ -75,9 +75,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void changePage({required AuthPageState pageState}) {
     emit(
-      state.copyWith(
-        pageState: pageState,
-      ),
+      state.copyWith(pageState: pageState, message: ""),
     );
   }
 }
