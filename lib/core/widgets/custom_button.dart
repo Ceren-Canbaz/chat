@@ -6,27 +6,33 @@ class Button extends StatelessWidget {
   final String text;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(
-        minHeight: 54,
-      ),
-      decoration: BoxDecoration(
-        color: onPressed != null
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(
-          6,
+    return InkWell(
+      borderRadius: BorderRadius.circular(6),
+      onTap: onPressed,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: onPressed != null
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(6),
         ),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: onPressed != null
-                    ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-              ),
+        child: Container(
+          constraints: const BoxConstraints(
+            minHeight: 54,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: onPressed != null
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context)
+                          .colorScheme
+                          .onPrimary
+                          .withOpacity(0.2),
+                ),
+          ),
         ),
       ),
     );
