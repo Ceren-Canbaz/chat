@@ -1,8 +1,8 @@
 import 'package:chat/core/constants/enums/auth_enum.dart';
 import 'package:chat/core/widgets/custom_button.dart';
 import 'package:chat/core/widgets/custom_text_field.dart';
-import 'package:chat/features/auth/presentation/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:chat/features/auth/presentation/features/auth/presentation/cubit/auth_state.dart';
+import 'package:chat/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:chat/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:svg_flutter/svg.dart';

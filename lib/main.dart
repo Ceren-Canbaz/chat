@@ -1,5 +1,5 @@
 import 'package:chat/core/themes/light_theme.dart';
-import 'package:chat/features/auth/presentation/features/auth/presentation/pages/auth_page.dart';
+import 'package:chat/features/auth/presentation/pages/auth_page.dart';
 import 'package:chat/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
