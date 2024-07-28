@@ -37,7 +37,10 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<Failure, UserCredential>> signUp(
       {required String email, required String password}) async {
     return await _repositoryExecuter.executeWithError(() async {
-      return await _src.signUp(email: email, password: password);
+      return await _src.signUp(
+        email: email,
+        password: password,
+      );
     });
   }
 }
