@@ -30,6 +30,6 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<UserCredential> signUp(
       {required String email, required String password}) async {
-    return await _src.signIn(email: email, password: password);
+    return await _src.signUp(email: email, password: password);
   }
 }
