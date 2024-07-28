@@ -1,5 +1,6 @@
 import 'package:chat/features/auth/data/auth_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class AuthRepository {
   ///use dartz
@@ -7,6 +8,7 @@ abstract class AuthRepository {
       {required String email, required String password});
 }
 
+@LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDataSource _src;
 

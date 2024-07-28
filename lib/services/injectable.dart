@@ -10,4 +10,5 @@ final locator = GetIt.instance;
   preferRelativeImports: true, // default
   asExtension: true, // default
 )
+@injectableInit
 void configureDependencies() => locator.init();

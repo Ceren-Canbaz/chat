@@ -5,6 +5,7 @@ import 'package:chat/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:chat/features/auth/presentation/cubit/auth_state.dart';
 import 'package:chat/features/auth/presentation/pages/login_page.dart';
 import 'package:chat/features/auth/presentation/pages/register_page.dart';
+import 'package:chat/services/injectable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,12 +16,8 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(
-        authRepository: AuthRepositoryImpl(
-          src: AuthDataSourceImpl(),
-        ),
+        authRepository: locator<AuthRepository>(),
       ),
-
-      ///TODO: Fix this dependency injection with getit.
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state.pageState == AuthPageState.login) {

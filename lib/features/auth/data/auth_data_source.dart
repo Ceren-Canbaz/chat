@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class AuthDataSource {
   Future<UserCredential> signIn(
       {required String email, required String password});
 }
 
+@LazySingleton(as: AuthDataSource)
 class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 

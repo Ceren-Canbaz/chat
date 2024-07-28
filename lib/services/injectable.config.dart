@@ -11,17 +11,23 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 
+import '../features/auth/data/auth_data_source.dart' as _i3;
+import '../features/auth/domain/auth_repository.dart' as _i4;
+
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
   _i1.GetIt init({
     String? environment,
     _i2.EnvironmentFilter? environmentFilter,
   }) {
-    _i2.GetItHelper(
+    final gh = _i2.GetItHelper(
       this,
       environment,
       environmentFilter,
     );
+    gh.lazySingleton<_i3.AuthDataSource>(() => _i3.AuthDataSourceImpl());
+    gh.lazySingleton<_i4.AuthRepository>(
+        () => _i4.AuthRepositoryImpl(src: gh<_i3.AuthDataSource>()));
     return this;
   }
 }
