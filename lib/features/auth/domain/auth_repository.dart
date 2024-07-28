@@ -1,9 +1,9 @@
 import 'package:chat/features/auth/data/auth_data_source.dart';
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class AuthRepository {
-  ///use dartz
   Future<UserCredential> signIn(
       {required String email, required String password});
   Future<void> logOut();

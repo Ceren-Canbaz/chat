@@ -1,3 +1,4 @@
+import 'package:chat/core/handlers/request_handler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
@@ -24,8 +25,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       );
 
       return userCredential;
-    } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
     } catch (_) {
       rethrow;
     }

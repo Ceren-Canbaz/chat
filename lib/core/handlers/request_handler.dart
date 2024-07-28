@@ -11,31 +11,30 @@ class RequestHandler {
       // Firebase Authentication error codes
       switch (e.code) {
         case 'invalid-email':
-          throw InvalidEmailException('Invalid email address.');
+          throw InvalidEmailException();
         case 'user-disabled':
-          throw UserDisabledException('User account has been disabled.');
+          throw UserDisabledException();
         case 'user-not-found':
-          throw UserNotFoundException('No user found with this email.');
+          throw UserNotFoundException();
         case 'wrong-password':
-          throw WrongPasswordException('Incorrect password.');
+          throw WrongPasswordException();
         case 'email-already-in-use':
-          throw EmailAlreadyInUseException('Email is already in use.');
+          throw EmailAlreadyInUseException();
         case 'weak-password':
-          throw WeakPasswordException('Password is too weak.');
+          throw WeakPasswordException();
         case 'operation-not-allowed':
-          throw OperationNotAllowedException('Operation not allowed.');
+          throw OperationNotAllowedException();
         case 'network-request-failed':
-          throw NetworkRequestFailedException('Network request failed.');
+          throw NetworkRequestFailedException();
         case 'too-many-requests':
-          throw TooManyRequestsException(
-              'Too many requests. Please try again later.');
+          throw TooManyRequestsException();
         case 'user-token-expired':
-          throw UserTokenExpiredException('User token has expired.');
+          throw UserTokenExpiredException();
         default:
-          throw Exception('An unknown error occurred.');
+          throw Exception();
       }
     } on JsonParsingException catch (_) {
-      throw JsonParsingException("ERROR: Json Parsing Exception");
+      throw JsonParsingException();
     } catch (e) {
       rethrow;
     }
