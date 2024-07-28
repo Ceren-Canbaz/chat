@@ -3,7 +3,6 @@ enum RegisterState {
   loading,
   success,
   error,
-  passwordsDontMatch,
 }
 
 enum LoginState {

@@ -63,6 +63,10 @@ class RegisterPage extends StatelessWidget {
                 const SizedBox(
                   height: 24,
                 ),
+                if ((state).message != "") Text(state.message),
+                const SizedBox(
+                  height: 24,
+                ),
                 Button(
                     text: "Register",
                     onPressed: () async {
@@ -94,7 +98,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

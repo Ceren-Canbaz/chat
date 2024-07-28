@@ -3,14 +3,22 @@ import 'package:chat/core/constants/enums/auth_enum.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(const AuthInitialState(pageState: AuthPageState.login));
+  AuthCubit()
+      : super(
+          const AuthInitialState(
+            pageState: AuthPageState.login,
+            message: "",
+          ),
+        );
 
   void login(String email, String password) {
     emit(AuthLoginState(
-        email: email,
-        password: password,
-        loginState: LoginState.initial,
-        pageState: AuthPageState.login));
+      email: email,
+      password: password,
+      loginState: LoginState.initial,
+      pageState: AuthPageState.login,
+      message: "",
+    ));
   }
 
   Future<void> register(
@@ -22,23 +30,37 @@ class AuthCubit extends Cubit<AuthState> {
                 password: password,
                 passwordVerify: passwordVerify,
                 registerState: RegisterState.initial,
-                pageState: AuthPageState.register)
+                pageState: AuthPageState.register,
+                message: "")
             .copyWith(
-                password: 'Passwords dont match ',
-                passwordVerify: 'Passwords dont match',
-                registerState: RegisterState.passwordsDontMatch));
+          password: password,
+          passwordVerify: passwordVerify,
+          registerState: RegisterState.error,
+          message: "Passwords don't match",
+        ));
       } else {
         emit(
           AuthRegisterState(
-            email: email,
-            password: password,
-            passwordVerify: passwordVerify,
-            registerState: RegisterState.success,
-            pageState: AuthPageState.register,
-          ),
+              email: email,
+              password: password,
+              passwordVerify: passwordVerify,
+              registerState: RegisterState.success,
+              pageState: AuthPageState.register,
+              message: ""),
         );
       }
-    } else {}
+    } else {
+      emit(
+        AuthRegisterState(
+          email: email,
+          password: password,
+          passwordVerify: passwordVerify,
+          pageState: AuthPageState.register,
+          registerState: RegisterState.error,
+          message: "All fields must be filled out",
+        ),
+      );
+    }
   }
 
   void changePage({required AuthPageState pageState}) {
