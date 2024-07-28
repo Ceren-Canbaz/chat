@@ -1,6 +1,8 @@
 import 'package:chat/core/themes/light_theme.dart';
 import 'package:chat/features/auth/presentation/pages/auth_gate.dart';
 import 'package:chat/features/auth/presentation/pages/auth_page.dart';
+import 'package:chat/features/home/presentation/home_page.dart';
+import 'package:chat/features/settings/settings_page.dart';
 import 'package:chat/firebase_options.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +27,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: lightTheme,
       home: const AuthGate(),
+      routes: {
+        'auth': (context) => const AuthPage(),
+        '/home': (context) => const HomePage(),
+        '/settings': (context) => const SettingsPage()
+      },
     );
   }
 }
