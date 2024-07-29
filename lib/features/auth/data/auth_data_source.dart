@@ -17,7 +17,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RequestHandler _requestHandler = RequestHandler();
-
+  @override
   User? getCurrentUser() {
     return _auth.currentUser;
   }

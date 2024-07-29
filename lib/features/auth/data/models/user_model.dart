@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class User extends Equatable {
+class UserApiModel extends Equatable {
   final String uid;
   final String email;
 
-  const User({required this.uid, required this.email});
+  const UserApiModel({required this.uid, required this.email});
 
   @override
   List<Object?> get props => [
@@ -19,18 +20,11 @@ class User extends Equatable {
     };
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(
-      uid: map['uid'] ?? '',
-      email: map['email'] ?? '',
-    );
-  }
-
-  User copyWith({
+  UserApiModel copyWith({
     String? uid,
     String? email,
   }) {
-    return User(
+    return UserApiModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,
     );
