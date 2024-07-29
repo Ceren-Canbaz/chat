@@ -20,8 +20,15 @@ class HomeCubit extends Cubit<HomeState> {
               uid: "",
             ),
           ),
-        );
+        ) {
+    getCurrentUser();
+  }
   Stream<List<UserApiModel>> getUsersStream() {
     return _chatService.getUsersStream();
+  }
+
+  getCurrentUser() {
+    final user = _authSrc.getCurrentUser();
+    emit(state.copyWith(currentUser: user));
   }
 }
