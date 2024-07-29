@@ -1,4 +1,5 @@
 import 'package:chat/core/handlers/request_handler.dart';
+import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
@@ -9,7 +10,7 @@ abstract class AuthDataSource {
   Future<void> logOut();
   Future<UserCredential> signUp(
       {required String email, required String password});
-  User? getCurrentUser();
+  UserApiModel? getCurrentUser();
 }
 
 @LazySingleton(as: AuthDataSource)
@@ -18,8 +19,15 @@ class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RequestHandler _requestHandler = RequestHandler();
   @override
-  User? getCurrentUser() {
-    return _auth.currentUser;
+  UserApiModel? getCurrentUser() {
+    final user = _auth.currentUser;
+    if (user != null) {
+      return UserApiModel(
+        uid: user.uid,
+        email: user.email ?? "",
+      );
+    }
+    return null;
   }
 
   @override

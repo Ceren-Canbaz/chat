@@ -21,4 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
             ),
           ),
         );
+  Stream<List<UserApiModel>> getUsersStream() {
+    return _chatService.getUsersStream();
+  }
 }
