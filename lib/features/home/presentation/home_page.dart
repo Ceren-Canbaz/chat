@@ -1,4 +1,5 @@
 import 'package:chat/core/widgets/user_tile.dart';
+import 'package:chat/features/auth/data/auth_data_source.dart';
 import 'package:chat/features/chat/service/chat_service.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
@@ -58,10 +59,15 @@ Widget _buildUserList() {
 
 ///TODO: Map item must be changed with entity
 Widget _buildUserListItem(Map<String, dynamic> userData) {
-  return UserTile(
-    username: userData["email"],
-    onTap: () {
-      //navigate chat page
-    },
-  );
+  ///TODO:move this to cubit
+  if (userData['email'] != locator<AuthDataSource>().getCurrentUser()?.email) {
+    return UserTile(
+      username: userData["email"],
+      onTap: () {
+        //navigate chat page
+      },
+    );
+  } else {
+    return Container();
+  }
 }

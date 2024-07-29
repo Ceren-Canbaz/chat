@@ -9,6 +9,7 @@ abstract class AuthDataSource {
   Future<void> logOut();
   Future<UserCredential> signUp(
       {required String email, required String password});
+  User? getCurrentUser();
 }
 
 @LazySingleton(as: AuthDataSource)
@@ -16,6 +17,11 @@ class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RequestHandler _requestHandler = RequestHandler();
+
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
+
   @override
   Future<UserCredential> signIn(
       {required String email, required String password}) async {
