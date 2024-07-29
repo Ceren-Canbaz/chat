@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       home: const AuthGate(),
       routes: {
-        'auth': (context) => const AuthPage(),
+        '/auth': (context) => const AuthPage(),
         '/home': (context) => const HomePage(),
         '/settings': (context) => const SettingsPage(),
         '/chat': (context) => ChatPage(

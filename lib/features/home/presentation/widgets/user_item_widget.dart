@@ -19,7 +19,7 @@ Widget buildUserListItem({
           return UserTile(
             username: user.email,
             onTap: () {
-              Navigator.pushReplacementNamed(
+              Navigator.pushNamed(
                 context,
                 "/chat",
                 arguments: user,
