@@ -14,13 +14,11 @@ Widget buildUserList({required HomeCubit cubit}) {
           stream: cubit.getUsersStream(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: const CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (snapshot.hasError) {
-              return const Text("Something Went Wrong");
-
-              ///TODO:Fix that with error handler
+              return const Center(child: Text("Something Went Wrong"));
             }
             return ListView(
               children: snapshot.data!

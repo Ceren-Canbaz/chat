@@ -1,4 +1,5 @@
 import 'package:chat/core/themes/light_theme.dart';
+import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/auth/presentation/pages/auth_gate.dart';
 import 'package:chat/features/auth/presentation/pages/auth_page.dart';
 import 'package:chat/features/chat/presentation/chat_page.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
         'auth': (context) => const AuthPage(),
         '/home': (context) => const HomePage(),
         '/settings': (context) => const SettingsPage(),
-        '/chat': (context) => const ChatPage(),
+        '/chat': (context) => ChatPage(
+            user: ModalRoute.of(context)!.settings.arguments as UserApiModel),
       },
     );
   }

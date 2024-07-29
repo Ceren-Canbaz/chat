@@ -1,3 +1,4 @@
+import 'package:chat/core/widgets/custom_appbar.dart';
 import 'package:chat/ui/app_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +18,9 @@ class SettingsPage extends StatelessWidget {
           Navigator.pop(context);
         },
       ),
-      appBar: AppBar(
-        title: Text("Settings"),
+      appBar: CustomAppBar.appBar(
+        context: context,
+        title: "Settings",
       ),
     );
   }
