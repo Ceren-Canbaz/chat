@@ -1,3 +1,5 @@
+import 'package:chat/features/auth/presentation/pages/auth_page.dart';
+import 'package:chat/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,27 +10,17 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          // Navigate to the home page if user is authenticated
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushReplacementNamed('/home');
-          });
-          return const Scaffold(
-            body: SplashLogo(),
-          );
-        } else {
-          // Navigate to the login page if user is not authenticated
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushReplacementNamed('/auth');
-          });
-          return const Scaffold(
-            body: SplashLogo(),
-          );
-        }
-      },
+    return Scaffold(
+      body: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return HomePage();
+          } else {
+            return AuthPage();
+          }
+        },
+      ),
     );
   }
 }

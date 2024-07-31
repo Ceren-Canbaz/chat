@@ -55,8 +55,6 @@ class AppDrawer extends StatelessWidget {
                     title: "LOGOUT",
                     icon: Icons.logout,
                     onTap: () async {
-                      Navigator.pop(context);
-                      await Future.delayed(Duration(milliseconds: 750));
                       await context.read<AuthCubit>().logOut();
                     },
                   );
