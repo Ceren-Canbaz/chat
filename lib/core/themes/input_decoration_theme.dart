@@ -9,11 +9,11 @@ const inputdDcorationTheme = InputDecorationTheme(
     borderRadius: BorderRadius.all(Radius.circular(6)),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: AppColors.primary),
+    borderSide: BorderSide(color: AppColors.surface),
     borderRadius: BorderRadius.all(Radius.circular(6)),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: AppColors.secondary),
+    borderSide: BorderSide(color: AppColors.surface),
     borderRadius: BorderRadius.all(Radius.circular(6)),
   ),
   errorBorder: OutlineInputBorder(
