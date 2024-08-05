@@ -1,11 +1,13 @@
-import 'dart:io';
-
 import 'package:chat/core/widgets/custom_appbar.dart';
+import 'package:chat/features/auth/domain/auth_repository.dart';
+import 'package:chat/features/settings/domain/settings_repository.dart';
+import 'package:chat/features/settings/presentation/cubit/settings_cubit.dart';
+import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
 import 'package:chat/ui/information_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -15,51 +17,61 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: AppDrawer(
-        onTapHome: () {
-          Navigator.of(context).pushReplacementNamed("/home");
-        },
-        onTapSettings: () {
-          Navigator.pop(context);
-        },
-      ),
-      appBar: CustomAppBar.appBar(
-        context: context,
-        title: "Settings",
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: GestureDetector(
-                onTap: () async {
-                  await _requestPermissions();
-                  await _pickImage(ImageSource.gallery);
-                },
-                child: Icon(
-                  Icons.person,
-                  size: 68,
-                ),
+    return BlocProvider(
+      create: (context) => SettingsCubit(
+          authRepo: locator<AuthRepository>(),
+          repo: locator<SettingsRepository>()),
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        builder: (context, state) {
+          return Scaffold(
+            drawer: AppDrawer(
+              onTapHome: () {
+                Navigator.of(context).pushReplacementNamed("/home");
+              },
+              onTapSettings: () {
+                Navigator.pop(context);
+              },
+            ),
+            appBar: CustomAppBar.appBar(
+              context: context,
+              title: "Settings",
+            ),
+            body: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () async {
+                        await _requestPermissions();
+                        await _pickImage(ImageSource.gallery, context);
+                      },
+                      child: const Icon(
+                        Icons.person,
+                        size: 68,
+                      ),
+                    ),
+                  ),
+                  const InformationText(
+                      title: "Username", subTitle: "Ceren Canbaz"),
+                  const InformationText(
+                      title: "Email", subTitle: "ceren_canbaz@hotmail.com"),
+                ],
               ),
             ),
-            const InformationText(title: "Username", subTitle: "Ceren Canbaz"),
-            const InformationText(
-                title: "Email", subTitle: "ceren_canbaz@hotmail.com"),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  Future<void> _pickImage(ImageSource source) async {
+  Future<void> _pickImage(ImageSource source, BuildContext context) async {
     try {
       final pickedFile = await _picker.pickImage(source: source);
       if (pickedFile != null) {
-        print('Image path: ${pickedFile.path}');
+        context.read<SettingsCubit>().uploadImage(file: pickedFile);
       }
     } catch (e) {
       print('Error picking image: $e');

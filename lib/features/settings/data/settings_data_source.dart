@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chat/core/handlers/request_handler.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
@@ -15,26 +15,37 @@ abstract class SettingsDataSource {
 @LazySingleton(as: SettingsDataSource)
 class SettingsDataSourceImpl implements SettingsDataSource {
   final _storageRef = FirebaseStorage.instance.ref();
-  final _fireStore = FirebaseFirestore.instance;
+
+  final RequestHandler _requestHandler = RequestHandler();
+
   @override
   Future<void> uploadProfileImage({
     required String userId,
     required XFile imageFile,
   }) async {
-    // Create a reference to Firebase Storage
+    // try {
+    //   // Firebase Storage'da bir referans oluştur
+    //   final imagesRef = _storageRef
+    //       .child('profile_images/$userId/${DateTime.now().toIso8601String()}');
 
-    final imagesRef = _storageRef
-        .child('profile_images/$userId/${DateTime.now().toIso8601String()}');
+    //   // Dosyayı yükle
+    //   final uploadTask = imagesRef.putFile(File(imageFile.path));
+    //   await uploadTask.whenComplete(() => print('Upload complete'));
 
-    // Upload the file
-    await imagesRef.putFile(File(imageFile.path));
+    //   // Yükleme tamamlandıktan sonra download URL'yi al
+    //   final downloadUrl = await imagesRef.getDownloadURL();
+    //   print('Download URL obtained: $downloadUrl');
 
-    // Get the download URL
-    final downloadUrl = await imagesRef.getDownloadURL();
+    //   // Realtime Database'de URL'yi güncelle
+    //   final userRef = _fireStore.ref('Users/$userId');
+    //   await userRef.update({
+    //     'imageFolder': downloadUrl,
+    //   });
 
-    // Save the URL to Firestore or Realtime Database
-    await _fireStore.collection('users').doc(userId).update({
-      'imageFolder': downloadUrl,
-    });
+    //   print(
+    //       'Realtime Database document updated successfully with URL: $downloadUrl');
+    // } catch (e) {
+    //   print('Error occurred during upload and update: $e');
+    // }
   }
 }
