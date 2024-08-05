@@ -23,6 +23,7 @@ Widget buildMessageList(
             .map(
               (e) => buildMessageItem(
                 doc: e,
+                context: context,
               ),
             )
             .toList(),
