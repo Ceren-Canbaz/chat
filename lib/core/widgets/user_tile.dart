@@ -6,20 +6,33 @@ class UserTile extends StatelessWidget {
   final VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            children: [
-              const Icon(Icons.person),
-              Text(username),
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withOpacity(
+                  0.4,
+                ),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(
+              16,
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.person,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                const SizedBox(
+                  width: 12,
+                ),
+                Text(username),
+              ],
+            ),
           ),
         ),
       ),
