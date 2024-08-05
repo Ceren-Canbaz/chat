@@ -6,6 +6,7 @@ import 'package:chat/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
 import 'package:chat/ui/information_text.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -47,18 +48,60 @@ class SettingsPage extends StatelessWidget {
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: GestureDetector(
-                        onTap: () async {
-                          await _requestPermissions();
-                          await _pickImage(ImageSource.gallery, context);
-                        },
-                        child: CircleAvatar(
-                          child: state.user.imageFolder != ""
-                              ? Image.network(state.user.imageFolder)
-                              : const Icon(
-                                  Icons.person,
+                    child: InkWell(
+                      radius: 70,
+                      borderRadius: BorderRadius.circular(70),
+                      onTap: () async {
+                        await _requestPermissions();
+                        await _pickImage(ImageSource.gallery, context);
+                      },
+                      child: SizedBox(
+                        height: 150,
+                        width: 150,
+                        child: ClipOval(
+                          child: FadeInImage.assetNetwork(
+                            placeholder: "",
+                            placeholderErrorBuilder:
+                                (context, error, stackTrace) {
+                              return Container(
+                                color: Theme.of(context).colorScheme.surface,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.person_outline,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      size: 120,
+                                    ),
+                                  ],
                                 ),
-                        )),
+                              );
+                            },
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Theme.of(context).colorScheme.surface,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.person_outline,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      size: 120,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            image: state.user.imageFolder,
+                            fit: BoxFit.cover,
+                            fadeInDuration: const Duration(milliseconds: 300),
+                            fadeOutDuration: const Duration(milliseconds: 300),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   const InformationText(
                       title: "Username", subTitle: "Ceren Canbaz"),

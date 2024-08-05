@@ -27,10 +27,15 @@ class SettingsCubit extends Cubit<SettingsState> {
         );
 
   Future<void> uploadImage({required XFile file}) async {
+    emit(state.copyWith(requestState: RequestState.loading));
     final result = await _repo.uploadProfileImage(
       userId: user.uid,
       imageFile: file,
     );
-    result.fold((l) {}, (r) {});
+    result.fold((l) {
+      emit(state.copyWith(requestState: RequestState.error));
+    }, (r) async {});
+    final updatedUser = await _authRepo.getUserDetail();
+    emit(state.copyWith(requestState: RequestState.loaded, user: updatedUser));
   }
 }
