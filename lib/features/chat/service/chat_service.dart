@@ -11,7 +11,7 @@ abstract class ChatService {
     required String recieverId,
     required String message,
   });
-  Stream<QuerySnapshot> getMessages({
+  Stream<QuerySnapshot<Message?>> getMessages({
     required String userId,
     required String otherUserId,
   });
@@ -45,6 +45,7 @@ class ChatServiceImpl implements ChatService {
           senderEmail: user.email,
           recieverId: recieverId,
           message: message,
+          isMe: currentUserId == user.uid,
           timestamp: timestamp);
       List<String> ids = [user.uid, recieverId];
       ids.sort();
@@ -63,16 +64,27 @@ class ChatServiceImpl implements ChatService {
   }
 
   @override
-  Stream<QuerySnapshot<Object?>> getMessages(
+  Stream<QuerySnapshot<Message?>> getMessages(
       {required String userId, required String otherUserId}) {
     List<String> ids = [userId, otherUserId];
     ids.sort();
     String chatRoomId = ids.join('_');
+
     return _firestore
         .collection("chat_rooms")
         .doc(chatRoomId)
         .collection("messages")
         .orderBy("timestamp", descending: false)
-        .snapshots();
+        .withConverter<Message>(
+      fromFirestore: (snapshot, _) {
+        final data = snapshot.data()!;
+        return Message.fromMap(data).copyWith(
+          isMe: data["senderId"] == userId,
+        );
+      },
+      toFirestore: (value, options) {
+        return {};
+      },
+    ).snapshots();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
+import 'package:chat/features/chat/data/models/message.dart';
 import 'package:chat/features/chat/service/chat_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -26,7 +27,7 @@ class ChatCubit extends Cubit<ChatState> {
     } catch (e) {}
   }
 
-  Stream<QuerySnapshot<Object?>> getMessages({
+  Stream<QuerySnapshot<Message?>> getMessages({
     required String otherUserId,
   }) {
     final String userId = _authRepository.getCurrentUser()?.uid ?? "";
