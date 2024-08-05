@@ -32,7 +32,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/auth': (context) => const AuthPage(),
         '/home': (context) => const HomePage(),
-        '/settings': (context) => SettingsPage(),
+        '/settings': (context) => SettingsPage(
+            user: ModalRoute.of(context)!.settings.arguments as UserApiModel),
         '/chat': (context) => ChatPage(
             user: ModalRoute.of(context)!.settings.arguments as UserApiModel),
       },

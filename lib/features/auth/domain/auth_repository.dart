@@ -12,7 +12,8 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> logOut();
   Future<Either<Failure, UserCredential>> signUp(
       {required String email, required String password});
-  UserApiModel? getCurrentUser();
+  Future<UserApiModel?> getUserDetail();
+  User? getCurrentUser();
 }
 
 @LazySingleton(as: AuthRepository)
@@ -47,7 +48,15 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  UserApiModel? getCurrentUser() {
+  Future<UserApiModel?> getUserDetail() async {
+    await _repositoryExecuter.executeWithoutError(() async {
+      return await _src.getUserDetail();
+    });
+    return null;
+  }
+
+  @override
+  User? getCurrentUser() {
     return _src.getCurrentUser();
   }
 }

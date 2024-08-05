@@ -30,6 +30,7 @@ class HomePage extends StatelessWidget {
               onTapSettings: () {
                 Navigator.of(context).pushReplacementNamed(
                   "/settings",
+                  arguments: state.currentUser,
                 );
               },
             ),

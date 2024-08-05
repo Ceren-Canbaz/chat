@@ -15,20 +15,17 @@ class HomeCubit extends Cubit<HomeState> {
         super(
           const HomeState(
             userList: [],
-            currentUser: UserApiModel(
-              email: "",
-              uid: "",
-            ),
+            currentUser: UserApiModel(email: "", uid: "", imageFolder: ""),
           ),
         ) {
-    getCurrentUser();
+    getUser();
   }
   Stream<List<UserApiModel>> getUsersStream() {
     return _chatService.getUsersStream();
   }
 
-  getCurrentUser() {
-    final user = _authSrc.getCurrentUser();
+  Future<UserApiModel?> getUser() async {
+    final user = await _authSrc.getUserDetail();
     emit(state.copyWith(currentUser: user));
   }
 }

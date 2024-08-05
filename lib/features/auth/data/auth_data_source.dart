@@ -10,7 +10,8 @@ abstract class AuthDataSource {
   Future<void> logOut();
   Future<UserCredential> signUp(
       {required String email, required String password});
-  UserApiModel? getCurrentUser();
+  Future<UserApiModel?> getUserDetail();
+  User? getCurrentUser();
 }
 
 @LazySingleton(as: AuthDataSource)
@@ -19,15 +20,25 @@ class AuthDataSourceImpl implements AuthDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final RequestHandler _requestHandler = RequestHandler();
   @override
-  UserApiModel? getCurrentUser() {
-    final user = _auth.currentUser;
-    if (user != null) {
-      return UserApiModel(
-        uid: user.uid,
-        email: user.email ?? "",
-      );
-    }
-    return null;
+  Future<UserApiModel?> getUserDetail() async {
+    return await _requestHandler.call(() async {
+      final user = _auth.currentUser;
+      // Firestore'dan kullanıcı belgesini al
+      final doc = await _firestore.collection('Users').doc(user?.uid).get();
+
+      if (doc.exists) {
+        // Kullanıcı modelini Firestore verileri ile oluştur
+        return UserApiModel.fromFirestore(
+          doc,
+        );
+      } else {
+        throw Exception();
+      }
+    });
+  }
+
+  User? getCurrentUser() {
+    return _auth.currentUser;
   }
 
   @override
