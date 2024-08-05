@@ -1,7 +1,10 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:chat/core/handlers/request_handler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
@@ -14,7 +17,8 @@ abstract class SettingsDataSource {
 
 @LazySingleton(as: SettingsDataSource)
 class SettingsDataSourceImpl implements SettingsDataSource {
-  final _storageRef = FirebaseStorage.instance.ref();
+  final _storageRef = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final RequestHandler _requestHandler = RequestHandler();
 
@@ -23,29 +27,24 @@ class SettingsDataSourceImpl implements SettingsDataSource {
     required String userId,
     required XFile imageFile,
   }) async {
-    // try {
-    //   // Firebase Storage'da bir referans oluştur
-    //   final imagesRef = _storageRef
-    //       .child('profile_images/$userId/${DateTime.now().toIso8601String()}');
+    return await _requestHandler.call(() async {
+      final file = File(imageFile.path);
 
-    //   // Dosyayı yükle
-    //   final uploadTask = imagesRef.putFile(File(imageFile.path));
-    //   await uploadTask.whenComplete(() => print('Upload complete'));
+      if (!await file.exists()) {
+        print('Dosya mevcut değil: ${file.path}');
+        return;
+      }
 
-    //   // Yükleme tamamlandıktan sonra download URL'yi al
-    //   final downloadUrl = await imagesRef.getDownloadURL();
-    //   print('Download URL obtained: $downloadUrl');
+      final fileRef = _storageRef.ref().child('profile_images').child(userId);
 
-    //   // Realtime Database'de URL'yi güncelle
-    //   final userRef = _fireStore.ref('Users/$userId');
-    //   await userRef.update({
-    //     'imageFolder': downloadUrl,
-    //   });
+      final uploadTask = fileRef.putFile(file);
 
-    //   print(
-    //       'Realtime Database document updated successfully with URL: $downloadUrl');
-    // } catch (e) {
-    //   print('Error occurred during upload and update: $e');
-    // }
+      final snapshot = await uploadTask.whenComplete(() => null);
+      final downloadUrl = await snapshot.ref.getDownloadURL();
+
+      await _firestore.collection('Users').doc(userId).update({
+        'imageFolder': downloadUrl,
+      });
+    });
   }
 }

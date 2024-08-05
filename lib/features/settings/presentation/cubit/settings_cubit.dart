@@ -22,8 +22,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     );
     result.fold((l) {
       print(l.message);
-    }, (r) {
-      print("yuklenir=yor>");
-    });
+    }, (r) {});
   }
 }
