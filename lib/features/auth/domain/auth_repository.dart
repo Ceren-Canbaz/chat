@@ -49,10 +49,9 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<UserApiModel?> getUserDetail() async {
-    await _repositoryExecuter.executeWithoutError(() async {
+    return await _repositoryExecuter.executeWithoutError(() async {
       return await _src.getUserDetail();
     });
-    return null;
   }
 
   @override

@@ -33,9 +33,18 @@ class SettingsCubit extends Cubit<SettingsState> {
       imageFile: file,
     );
     result.fold((l) {
-      emit(state.copyWith(requestState: RequestState.error));
+      emit(
+        state.copyWith(
+          requestState: RequestState.error,
+        ),
+      );
     }, (r) async {});
     final updatedUser = await _authRepo.getUserDetail();
-    emit(state.copyWith(requestState: RequestState.loaded, user: updatedUser));
+    emit(
+      state.copyWith(
+        requestState: RequestState.loaded,
+        user: updatedUser,
+      ),
+    );
   }
 }

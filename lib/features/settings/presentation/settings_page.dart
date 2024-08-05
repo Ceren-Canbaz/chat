@@ -1,3 +1,4 @@
+import 'package:chat/core/constants/enums/request_enum.dart';
 import 'package:chat/core/widgets/custom_appbar.dart';
 import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
@@ -6,10 +7,9 @@ import 'package:chat/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
 import 'package:chat/ui/information_text.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -51,55 +51,62 @@ class SettingsPage extends StatelessWidget {
                     child: InkWell(
                       radius: 70,
                       borderRadius: BorderRadius.circular(70),
-                      onTap: () async {
-                        await _requestPermissions();
-                        await _pickImage(ImageSource.gallery, context);
-                      },
+                      onTap: state.requestState != RequestState.loading
+                          ? () async {
+                              await _requestPermissions();
+                              await _pickImage(ImageSource.gallery, context);
+                            }
+                          : null,
                       child: SizedBox(
                         height: 150,
                         width: 150,
-                        child: ClipOval(
-                          child: FadeInImage.assetNetwork(
-                            placeholder: "",
-                            placeholderErrorBuilder:
-                                (context, error, stackTrace) {
-                              return Container(
-                                color: Theme.of(context).colorScheme.surface,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.person_outline,
+                        child: state.requestState == RequestState.loading
+                            ? const CircularProgressIndicator()
+                            : ClipOval(
+                                child: FadeInImage.assetNetwork(
+                                  placeholder: "",
+                                  placeholderErrorBuilder:
+                                      (context, error, stackTrace) {
+                                    return Container(
                                       color:
-                                          Theme.of(context).colorScheme.primary,
-                                      size: 120,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            imageErrorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                color: Theme.of(context).colorScheme.surface,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.person_outline,
+                                          Theme.of(context).colorScheme.surface,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.person_outline,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            size: 120,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  imageErrorBuilder:
+                                      (context, error, stackTrace) {
+                                    return Container(
                                       color:
-                                          Theme.of(context).colorScheme.primary,
-                                      size: 120,
-                                    ),
-                                  ],
+                                          Theme.of(context).colorScheme.surface,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.person_outline,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                            size: 120,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  image: state.user.imageFolder,
+                                  fit: BoxFit.cover,
                                 ),
-                              );
-                            },
-                            image: state.user.imageFolder,
-                            fit: BoxFit.cover,
-                            fadeInDuration: const Duration(milliseconds: 300),
-                            fadeOutDuration: const Duration(milliseconds: 300),
-                          ),
-                        ),
+                              ),
                       ),
                     ),
                   ),

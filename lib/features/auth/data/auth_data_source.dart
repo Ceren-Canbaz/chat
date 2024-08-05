@@ -21,22 +21,24 @@ class AuthDataSourceImpl implements AuthDataSource {
   final RequestHandler _requestHandler = RequestHandler();
   @override
   Future<UserApiModel?> getUserDetail() async {
-    return await _requestHandler.call(() async {
-      final user = _auth.currentUser;
-      // Firestore'dan kullanıcı belgesini al
-      final doc = await _firestore.collection('Users').doc(user?.uid).get();
+    return await _requestHandler.call(
+      () async {
+        final user = _auth.currentUser;
+        // Firestore'dan kullanıcı belgesini al
+        final doc = await _firestore.collection('Users').doc(user?.uid).get();
 
-      if (doc.exists) {
-        // Kullanıcı modelini Firestore verileri ile oluştur
-        return UserApiModel.fromFirestore(
-          doc,
-        );
-      } else {
-        throw Exception();
-      }
-    });
+        if (doc.exists) {
+          return UserApiModel.fromFirestore(
+            doc,
+          );
+        } else {
+          throw Exception();
+        }
+      },
+    );
   }
 
+  @override
   User? getCurrentUser() {
     return _auth.currentUser;
   }

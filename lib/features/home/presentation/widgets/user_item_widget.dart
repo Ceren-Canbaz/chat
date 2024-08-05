@@ -1,9 +1,6 @@
 import 'package:chat/core/widgets/user_tile.dart';
-
 import 'package:chat/features/auth/data/models/user_model.dart';
-
 import 'package:chat/features/home/presentation/cubit/home_cubit.dart';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

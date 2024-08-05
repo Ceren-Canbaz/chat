@@ -29,7 +29,7 @@ class ChatServiceImpl implements ChatService {
         return UserApiModel(
             uid: user["uid"],
             email: user["email"],
-            imageFolder: user["imageFolder"]);
+            imageFolder: user["imageFolder"] ?? "");
       }).toList();
     });
   }
