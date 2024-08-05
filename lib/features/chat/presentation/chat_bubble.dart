@@ -1,3 +1,4 @@
+import 'package:chat/core/extensions/date_extensions.dart';
 import 'package:chat/features/chat/data/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -9,29 +10,33 @@ Widget buildMessageItem(
 
   return Align(
     alignment: data.isMe ? Alignment.centerRight : Alignment.centerLeft,
-    child: Container(
-      constraints: BoxConstraints(
-        minWidth: MediaQuery.of(context).size.width * 0.2,
-        maxWidth: MediaQuery.of(context).size.width * 0.7,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              data.isMe.toString(),
-              textAlign: TextAlign.start,
-            ),
-            Text(
-              data.timestamp.toDate().day.toString(),
-            )
-          ],
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment:
+          data.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.all(12),
+          child: Text(
+            data.message,
+            textAlign: TextAlign.start,
+          ),
         ),
-      ),
+        Align(
+          alignment: data.isMe ? Alignment.bottomRight : Alignment.bottomLeft,
+          child: Text(
+            data.timestamp.toDate().formatDate,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        )
+      ],
     ),
   );
 }
