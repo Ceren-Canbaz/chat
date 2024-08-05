@@ -1,6 +1,7 @@
 import 'package:chat/core/failures/failures.dart';
 import 'package:chat/core/handlers/repository_executer.dart';
 import 'package:chat/features/auth/data/auth_data_source.dart';
+import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
@@ -11,6 +12,7 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> logOut();
   Future<Either<Failure, UserCredential>> signUp(
       {required String email, required String password});
+  UserApiModel? getCurrentUser();
 }
 
 @LazySingleton(as: AuthRepository)
@@ -42,5 +44,10 @@ class AuthRepositoryImpl extends AuthRepository {
         password: password,
       );
     });
+  }
+
+  @override
+  UserApiModel? getCurrentUser() {
+    return _src.getCurrentUser();
   }
 }
