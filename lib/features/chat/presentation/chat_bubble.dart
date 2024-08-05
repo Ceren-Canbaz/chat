@@ -5,5 +5,7 @@ import 'package:flutter/material.dart';
 Widget buildMessageItem({required DocumentSnapshot doc}) {
   final data = doc.data() as Message;
 
-  return Text(data.isMe.toString());
+  return Align(
+      alignment: data.isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Text(data.isMe.toString()));
 }
