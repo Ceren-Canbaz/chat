@@ -18,7 +18,7 @@ ThemeData lightTheme = ThemeData(
     onError: AppColors.onError,
   ),
   textTheme: textTheme,
-  inputDecorationTheme: inputdDcorationTheme,
+  inputDecorationTheme: inputdDcorationThemeLight,
   buttonTheme: const ButtonThemeData(
     buttonColor: AppColors.primary,
     textTheme: ButtonTextTheme.primary,
