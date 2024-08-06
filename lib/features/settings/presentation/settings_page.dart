@@ -1,3 +1,4 @@
+import 'package:chat/core/constants/enums/modal_state_enum.dart';
 import 'package:chat/core/constants/enums/request_enum.dart';
 import 'package:chat/core/widgets/custom_appbar.dart';
 import 'package:chat/features/auth/data/models/user_model.dart';
@@ -7,6 +8,8 @@ import 'package:chat/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
 import 'package:chat/features/settings/presentation/widgets/information_text.dart';
+import 'package:chat/ui/loading_dialog.dart';
+import 'package:chat/ui/success_dialog.dart';
 
 import 'package:flutter/material.dart';
 
@@ -26,7 +29,45 @@ class SettingsPage extends StatelessWidget {
           user: user,
           authRepo: locator<AuthRepository>(),
           repo: locator<SettingsRepository>()),
-      child: BlocBuilder<SettingsCubit, SettingsState>(
+      child: BlocConsumer<SettingsCubit, SettingsState>(
+        listener: (context, state) {
+          switch (state.modalState) {
+            case ModalState.none:
+            case ModalState.loading:
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return const LoadingDialog();
+                },
+              );
+            case ModalState.success:
+              Navigator.pop(context);
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return const SuccessDialog();
+                },
+              );
+            case ModalState.error:
+              Navigator.pop(context);
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        Text(state.failure.title),
+                        Text(state.failure.message),
+                      ],
+                    ),
+                  );
+                },
+              );
+          }
+        },
         builder: (context, state) {
           return Scaffold(
             drawer: AppDrawer(
@@ -114,7 +155,11 @@ class SettingsPage extends StatelessWidget {
                     title: "Username",
                     subTitle: user.username,
                     allowEdit: true,
-                    onUsernameChanged: (username) {
+                    onUsernameChanged: (username) async {
+                      await context.read<SettingsCubit>().updateUsername(
+                            username: username,
+                          );
+
                       ///change username
                     },
                   ),
