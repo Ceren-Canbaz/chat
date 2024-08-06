@@ -13,7 +13,7 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../features/auth/data/auth_data_source.dart' as _i3;
 import '../../features/auth/domain/auth_repository.dart' as _i4;
-import '../../features/chat/service/chat_service.dart' as _i6;
+import '../../features/chat/data/chat_data_source.dart' as _i6;
 import '../../features/settings/data/settings_data_source.dart' as _i5;
 import '../../features/settings/domain/settings_repository.dart' as _i7;
 

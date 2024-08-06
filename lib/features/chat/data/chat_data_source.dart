@@ -1,4 +1,5 @@
 import 'package:chat/core/extensions/string_extensions.dart';
+import 'package:chat/core/handlers/request_handler.dart';
 import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/chat/data/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,7 +33,7 @@ abstract class ChatService {
 class ChatServiceImpl implements ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  final RequestHandler _requestHandler = RequestHandler();
   @override
   Stream<List<UserApiModel>> getUsersStream() {
     return _firestore.collection("Users").snapshots().map((event) {
@@ -45,7 +46,7 @@ class ChatServiceImpl implements ChatService {
   @override
   Future<void> sendMessage(
       {required String recieverId, required String message}) async {
-    try {
+    return await _requestHandler.call(() async {
       final String currentUserId = _auth.currentUser!.uid;
       final String currentUserEmail = _auth.currentUser!.email ?? "";
       final UserApiModel user = UserApiModel(
@@ -73,9 +74,7 @@ class ChatServiceImpl implements ChatService {
           .add(
             newMessage.toMap(),
           );
-    } catch (e) {
-      rethrow;
-    }
+    });
   }
 
   @override
@@ -109,20 +108,22 @@ class ChatServiceImpl implements ChatService {
       required String otherUserId,
       required String messageId,
       required String newMessageContent}) async {
-    try {
-      List<String> ids = [userId, otherUserId];
-      final chatRoomId = ids.sortAndJoin();
-      await _firestore
-          .collection("chat_rooms")
-          .doc(chatRoomId)
-          .collection("messages")
-          .doc(messageId)
-          .update({
-        'message': newMessageContent,
-      });
-    } catch (e) {
-      throw Exception();
-    }
+    return await _requestHandler.call(
+      () async {
+        List<String> ids = [userId, otherUserId];
+        final chatRoomId = ids.sortAndJoin();
+        await _firestore
+            .collection("chat_rooms")
+            .doc(chatRoomId)
+            .collection("messages")
+            .doc(messageId)
+            .update(
+          {
+            'message': newMessageContent,
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -131,19 +132,15 @@ class ChatServiceImpl implements ChatService {
     required String otherUserId,
     required String messageId,
   }) async {
-    List<String> ids = [userId, otherUserId];
-    final chatRoomId = ids.sortAndJoin();
-
-    try {
+    return await _requestHandler.call(() async {
+      List<String> ids = [userId, otherUserId];
+      final chatRoomId = ids.sortAndJoin();
       await _firestore
           .collection('chat_rooms')
           .doc(chatRoomId)
           .collection('messages')
           .doc(messageId)
           .delete();
-      print('Message deleted successfully');
-    } catch (e) {
-      print('Failed to delete message: $e');
-    }
+    });
   }
 }
