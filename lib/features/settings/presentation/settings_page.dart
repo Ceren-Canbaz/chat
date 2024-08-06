@@ -8,6 +8,7 @@ import 'package:chat/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
 import 'package:chat/features/settings/presentation/widgets/information_text.dart';
+import 'package:chat/ui/error_dialog.dart';
 import 'package:chat/ui/loading_dialog.dart';
 import 'package:chat/ui/success_dialog.dart';
 
@@ -33,6 +34,8 @@ class SettingsPage extends StatelessWidget {
         listener: (context, state) {
           switch (state.modalState) {
             case ModalState.none:
+              return;
+
             case ModalState.loading:
               showDialog(
                 barrierDismissible: false,
@@ -44,7 +47,7 @@ class SettingsPage extends StatelessWidget {
             case ModalState.success:
               Navigator.pop(context);
               showDialog(
-                barrierDismissible: false,
+                barrierDismissible: true,
                 context: context,
                 builder: (context) {
                   return const SuccessDialog();
@@ -53,16 +56,12 @@ class SettingsPage extends StatelessWidget {
             case ModalState.error:
               Navigator.pop(context);
               showDialog(
-                barrierDismissible: false,
+                barrierDismissible: true,
                 context: context,
                 builder: (context) {
-                  return Center(
-                    child: Column(
-                      children: [
-                        Text(state.failure.title),
-                        Text(state.failure.message),
-                      ],
-                    ),
+                  return ErrorDialog(
+                    title: state.failure.title,
+                    message: state.failure.message,
                   );
                 },
               );
@@ -153,7 +152,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   InformationTextField(
                     title: "Username",
-                    subTitle: user.username,
+                    subTitle: state.user.username,
                     allowEdit: true,
                     onUsernameChanged: (username) async {
                       await context.read<SettingsCubit>().updateUsername(
@@ -164,7 +163,7 @@ class SettingsPage extends StatelessWidget {
                     },
                   ),
                   const SizedBox(
-                    width: 12,
+                    height: 14,
                   ),
                   InformationTextField(
                     title: "Email",

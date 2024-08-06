@@ -11,9 +11,12 @@ class LoadingDialog extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(12.0),
         child: SizedBox(
-            height: 72,
-            width: 27,
-            child: Center(child: CircularProgressIndicator())),
+          height: 72,
+          width: 27,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
       ),
     );
   }

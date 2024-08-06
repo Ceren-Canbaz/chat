@@ -21,10 +21,12 @@ class InformationTextField extends StatefulWidget {
 
 class _InformationTextFieldState extends State<InformationTextField> {
   final TextEditingController controller = TextEditingController();
+
   bool isEditMode = false;
   @override
   void initState() {
     controller.text = widget.subTitle;
+    setState(() {});
     super.initState();
   }
 
@@ -69,8 +71,9 @@ class _InformationTextFieldState extends State<InformationTextField> {
               ),
               IconButton(
                 onPressed: widget.onUsernameChanged != null
-                    ? () {
-                        widget.onUsernameChanged!(controller.text);
+                    ? () async {
+                        await widget.onUsernameChanged!(controller.text);
+
                         isEditMode = false;
                         setState(() {});
                       }
