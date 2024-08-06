@@ -1,4 +1,4 @@
-import 'package:chat/core/handlers/repository_executer.dart';
+import 'package:chat/core/extensions/string_extensions.dart';
 import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/chat/data/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,9 +17,15 @@ abstract class ChatService {
     required String otherUserId,
   });
   Future<void> editMessage(
-      {required String chatRoomId,
+      {required String userId,
+      required String otherUserId,
       required String messageId,
       required String newMessageContent});
+  Future<void> deleteMessage({
+    required String userId,
+    required String otherUserId,
+    required String messageId,
+  });
 }
 
 @LazySingleton(as: ChatService)
@@ -99,10 +105,13 @@ class ChatServiceImpl implements ChatService {
 
   @override
   Future<void> editMessage(
-      {required String chatRoomId,
+      {required String userId,
+      required String otherUserId,
       required String messageId,
       required String newMessageContent}) async {
     try {
+      List<String> ids = [userId, otherUserId];
+      final chatRoomId = ids.sortAndJoin();
       await _firestore
           .collection("chat_rooms")
           .doc(chatRoomId)
@@ -113,6 +122,28 @@ class ChatServiceImpl implements ChatService {
       });
     } catch (e) {
       throw Exception();
+    }
+  }
+
+  @override
+  Future<void> deleteMessage({
+    required String userId,
+    required String otherUserId,
+    required String messageId,
+  }) async {
+    List<String> ids = [userId, otherUserId];
+    final chatRoomId = ids.sortAndJoin();
+
+    try {
+      await _firestore
+          .collection('chat_rooms')
+          .doc(chatRoomId)
+          .collection('messages')
+          .doc(messageId)
+          .delete();
+      print('Message deleted successfully');
+    } catch (e) {
+      print('Failed to delete message: $e');
     }
   }
 }

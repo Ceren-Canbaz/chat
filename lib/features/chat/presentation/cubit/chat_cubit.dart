@@ -41,15 +41,17 @@ class ChatCubit extends Cubit<ChatState> {
     required String messageContent,
   }) async {
     final String userId = _authRepository.getCurrentUser()?.uid ?? "";
-    var ids = [userId, recieverId];
-    final chatRoomId = ids.sortAndJoin();
+
     try {
       await _chatService.editMessage(
-          chatRoomId: chatRoomId,
+          otherUserId: recieverId,
+          userId: userId,
           messageId: messageId,
           newMessageContent: messageContent);
     } catch (e) {
       print(e);
+
+      ///implement error handling for ui
     }
   }
 }
