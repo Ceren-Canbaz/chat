@@ -8,41 +8,115 @@ Widget buildMessageItem(
   final data = doc.data() as Message;
 
   return Padding(
-    padding: const EdgeInsets.symmetric(
-      vertical: 4,
-    ),
+    padding: const EdgeInsets.symmetric(vertical: 4),
     child: Align(
       alignment: data.isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment:
-            data.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width * 0.7,
+      child: GestureDetector(
+        onLongPressStart: (details) {
+          _showPopupMenu(context, details.globalPosition, doc);
+        },
+        child: Column(
+          crossAxisAlignment:
+              data.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              decoration: BoxDecoration(
+                color: data.isMe
+                    ? Theme.of(context).colorScheme.primary.withOpacity(0.4)
+                    : Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                data.message,
+                textAlign: TextAlign.start,
+              ),
             ),
-            decoration: BoxDecoration(
-              color: data.isMe
-                  ? Theme.of(context).colorScheme.primary.withOpacity(0.4)
-                  : Theme.of(context).colorScheme.secondary.withOpacity(0.4),
-              borderRadius: BorderRadius.circular(8),
+            Align(
+              alignment:
+                  data.isMe ? Alignment.bottomRight : Alignment.bottomLeft,
+              child: Text(
+                data.timestamp.toDate().formatDate,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ),
-            padding: const EdgeInsets.all(12),
-            child: Text(
-              data.message,
-              textAlign: TextAlign.start,
-            ),
-          ),
-          Align(
-            alignment: data.isMe ? Alignment.bottomRight : Alignment.bottomLeft,
-            child: Text(
-              data.timestamp.toDate().formatDate,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          )
-        ],
+          ],
+        ),
       ),
     ),
+  );
+}
+
+void _showPopupMenu(
+    BuildContext context, Offset position, DocumentSnapshot doc) {
+  showMenu(
+    context: context,
+    position: RelativeRect.fromLTRB(
+      position.dx,
+      position.dy,
+      MediaQuery.of(context).size.width - position.dx, // Right position
+      MediaQuery.of(context).size.height - position.dy, // Bottom position
+    ),
+    items: [
+      PopupMenuItem(
+        child: ListTile(
+          leading: Icon(Icons.edit),
+          title: Text('Edit'),
+          onTap: () {
+            Navigator.pop(context);
+            _showEditDialog(context, doc);
+          },
+        ),
+      ),
+      PopupMenuItem(
+        child: ListTile(
+          leading: Icon(Icons.delete),
+          title: Text('Delete'),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    ],
+  );
+}
+
+void _showEditDialog(BuildContext context, DocumentSnapshot doc) {
+  final data = doc.data() as Message;
+  TextEditingController _controller = TextEditingController(text: data.message);
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Edit Message'),
+        content: TextField(
+          controller: _controller,
+          decoration: const InputDecoration(hintText: 'Enter new message'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              final updatedMessage = _controller.text;
+              FirebaseFirestore.instance
+                  .collection('messages')
+                  .doc(doc.id)
+                  .update({'message': updatedMessage});
+              Navigator.of(context).pop();
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      );
+    },
   );
 }
