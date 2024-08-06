@@ -15,6 +15,7 @@ Widget buildUserListItem({
         if (user.email != cubit.state.currentUser.email) {
           return UserTile(
             username: user.email,
+            imageFolder: user.imageFolder,
             onTap: () {
               Navigator.pushNamed(
                 context,

@@ -1,4 +1,5 @@
 import 'package:chat/core/widgets/custom_appbar.dart';
+import 'package:chat/core/widgets/user_tile.dart';
 import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'package:chat/features/chat/presentation/widgets/chat_input.dart';
@@ -30,7 +31,47 @@ class ChatPage extends StatelessWidget {
             appBar: CustomAppBar.appBar(
               context: context,
               title: user.email,
-              onTap: () {},
+              child: SizedBox(
+                height: 48,
+                width: 48,
+                child: ClipOval(
+                  child: FadeInImage.assetNetwork(
+                    placeholder: "",
+                    placeholderErrorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Theme.of(context).colorScheme.surface,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.person_outline,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 54,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Theme.of(context).colorScheme.surface,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.person_outline,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 54,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    image: user.imageFolder,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(
