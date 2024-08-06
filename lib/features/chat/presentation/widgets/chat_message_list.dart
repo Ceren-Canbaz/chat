@@ -20,7 +20,9 @@ Widget buildMessageList(
       }
 
       return ListView(
-        children: snapshot.data!.docs
+        reverse: true,
+        children: snapshot.data!.docs.reversed
+            .toList()
             .map(
               (e) => buildMessageItem(
                 doc: e,

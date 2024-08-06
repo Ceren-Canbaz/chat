@@ -1,4 +1,3 @@
-import 'package:chat/core/widgets/user_tile.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar {
