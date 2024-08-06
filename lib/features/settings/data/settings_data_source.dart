@@ -54,10 +54,14 @@ class SettingsDataSourceImpl implements SettingsDataSource {
   @override
   Future<void> updateUsername(
       {required String userId, required String username}) async {
-    return _requestHandler.call(() async {
-      await _firestore.collection('Users').doc(userId).update({
-        'username': username,
-      });
-    });
+    return _requestHandler.call(
+      () async {
+        await _firestore.collection('Users').doc(userId).update(
+          {
+            'username': username,
+          },
+        );
+      },
+    );
   }
 }

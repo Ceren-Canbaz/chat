@@ -1,7 +1,7 @@
 import 'package:chat/core/colors/app_colors.dart';
-import 'package:chat/core/themes/button_theme.dart';
-import 'package:chat/core/themes/input_decoration_theme.dart';
-import 'package:chat/core/themes/text_theme.dart';
+import 'package:chat/core/themes/component_themes/button_theme.dart';
+import 'package:chat/core/themes/component_themes/input_decoration_theme.dart';
+import 'package:chat/core/themes/component_themes/text_theme.dart';
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
