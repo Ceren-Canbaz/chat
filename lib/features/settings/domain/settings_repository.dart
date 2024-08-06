@@ -12,6 +12,8 @@ abstract class SettingsRepository {
   });
   Future<Either<Failure, void>> updateUsername(
       {required String userId, required String username});
+  Future<void> saveThemeToLocal(bool isDarkMode);
+  Future<bool> loadThemeFromLocal();
 }
 
 @LazySingleton(as: SettingsRepository)
@@ -34,5 +36,15 @@ class SettingsRepositoryImpl implements SettingsRepository {
     return await _repositoryExecuter.executeWithError(() async {
       return _src.updateUsername(userId: userId, username: username);
     });
+  }
+
+  @override
+  Future<bool> loadThemeFromLocal() async {
+    return await _src.loadThemeFromLocal();
+  }
+
+  @override
+  Future<void> saveThemeToLocal(bool isDarkMode) async {
+    return await _src.saveThemeToLocal(isDarkMode);
   }
 }

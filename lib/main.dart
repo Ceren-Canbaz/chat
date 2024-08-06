@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/auth/presentation/pages/auth_gate.dart';
 import 'package:chat/features/auth/presentation/pages/auth_page.dart';
 import 'package:chat/features/chat/presentation/chat_page.dart';
 import 'package:chat/features/home/presentation/home_page.dart';
+import 'package:chat/features/settings/domain/settings_repository.dart';
 import 'package:chat/features/settings/presentation/settings_page.dart';
 import 'package:chat/firebase_options.dart';
 import 'package:chat/services/injectable/injectable.dart';
@@ -12,14 +15,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:hive_flutter/hive_flutter.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  var path = Directory.current.path;
+  await Hive.initFlutter();
 
   runApp(
     BlocProvider(
-      create: (context) => ThemeCubit(),
+      create: (context) => ThemeCubit(repo: locator<SettingsRepository>()),
       child: const MyApp(),
     ),
   );
