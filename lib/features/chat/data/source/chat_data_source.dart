@@ -2,7 +2,7 @@ import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/chat/data/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class ChatService {
+abstract class ChatDataSource {
   Stream<List<UserApiModel>> getUsersStream();
   Future<void> sendMessage({
     required String recieverId,

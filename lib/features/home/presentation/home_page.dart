@@ -3,7 +3,7 @@ import 'package:chat/core/widgets/custom_appbar.dart';
 import 'package:chat/features/auth/data/auth_data_source.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
 
-import 'package:chat/features/chat/service/chat_service.dart';
+import 'package:chat/features/chat/data/source/chat_data_source.dart';
 import 'package:chat/features/home/presentation/cubit/home_cubit.dart';
 import 'package:chat/features/home/presentation/widgets/user_list_widget.dart';
 import 'package:chat/services/injectable/injectable.dart';
@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeCubit(
         authRepository: locator<AuthRepository>(),
-        chatService: locator<ChatService>(),
+        chatService: locator<ChatDataSource>(),
       )..getUser(),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {

@@ -5,7 +5,7 @@ import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'package:chat/features/chat/presentation/widgets/chat_input.dart';
 import 'package:chat/features/chat/presentation/widgets/chat_message_list.dart';
 import 'package:chat/features/chat/presentation/cubit/chat_cubit.dart';
-import 'package:chat/features/chat/service/chat_service.dart';
+import 'package:chat/features/chat/data/source/chat_data_source.dart';
 import 'package:chat/services/injectable/injectable.dart';
 
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class ChatPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ChatCubit(
         authRepository: locator<AuthRepository>(),
-        chatService: locator<ChatService>(),
+        chatService: locator<ChatDataSource>(),
         recieverId: user.uid,
       ),
       child: BlocBuilder<ChatCubit, ChatState>(

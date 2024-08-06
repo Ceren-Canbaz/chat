@@ -13,9 +13,10 @@ import 'package:injectable/injectable.dart' as _i2;
 
 import '../../features/auth/data/auth_data_source.dart' as _i3;
 import '../../features/auth/domain/auth_repository.dart' as _i4;
-import '../../features/chat/data/chat_data_source.dart' as _i6;
-import '../../features/settings/data/settings_data_source.dart' as _i5;
-import '../../features/settings/domain/settings_repository.dart' as _i7;
+import '../../features/chat/data/source/chat_data_source.dart' as _i5;
+import '../../features/chat/data/source/chat_data_source_impl.dart' as _i6;
+import '../../features/settings/data/settings_data_source.dart' as _i7;
+import '../../features/settings/domain/settings_repository.dart' as _i8;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -31,11 +32,11 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i3.AuthDataSource>(() => _i3.AuthDataSourceImpl());
     gh.lazySingleton<_i4.AuthRepository>(
         () => _i4.AuthRepositoryImpl(src: gh<_i3.AuthDataSource>()));
-    gh.lazySingleton<_i5.SettingsDataSource>(
-        () => _i5.SettingsDataSourceImpl());
-    gh.lazySingleton<_i6.ChatService>(() => _i6.ChatServiceImpl());
-    gh.lazySingleton<_i7.SettingsRepository>(
-        () => _i7.SettingsRepositoryImpl(src: gh<_i5.SettingsDataSource>()));
+    gh.lazySingleton<_i5.ChatDataSource>(() => _i6.ChatDataSourceImpl());
+    gh.lazySingleton<_i7.SettingsDataSource>(
+        () => _i7.SettingsDataSourceImpl());
+    gh.lazySingleton<_i8.SettingsRepository>(
+        () => _i8.SettingsRepositoryImpl(src: gh<_i7.SettingsDataSource>()));
     return this;
   }
 }

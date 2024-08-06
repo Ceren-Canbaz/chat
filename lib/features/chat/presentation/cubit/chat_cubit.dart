@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:chat/core/extensions/string_extensions.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'package:chat/features/chat/data/models/message.dart';
-import 'package:chat/features/chat/service/chat_service.dart';
+import 'package:chat/features/chat/data/source/chat_data_source.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,12 +10,12 @@ part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final AuthRepository _authRepository;
-  final ChatService _chatService;
+  final ChatDataSource _chatService;
   final String recieverId;
 
   ChatCubit(
       {required AuthRepository authRepository,
-      required ChatService chatService,
+      required ChatDataSource chatService,
       required this.recieverId})
       : _authRepository = authRepository,
         _chatService = chatService,

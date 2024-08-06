@@ -1,15 +1,15 @@
 import 'package:chat/core/extensions/string_extensions.dart';
 import 'package:chat/core/handlers/request_handler.dart';
 import 'package:chat/features/auth/data/models/user_model.dart';
-import 'package:chat/features/chat/data/chat_data_source.dart';
+import 'package:chat/features/chat/data/source/chat_data_source.dart';
 import 'package:chat/features/chat/data/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: ChatService)
-class ChatServiceImpl implements ChatService {
+@LazySingleton(as: ChatDataSource)
+class ChatDataSourceImpl implements ChatDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final RequestHandler _requestHandler = RequestHandler();
