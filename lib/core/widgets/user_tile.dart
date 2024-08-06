@@ -16,79 +16,84 @@ class UserTile extends StatelessWidget {
   final double? width;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withOpacity(
-                  0.4,
-                ),
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(
-              16,
-            ),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: height ?? 64,
-                  width: width ?? 64,
-                  child: ClipOval(
-                    child: FadeInImage.assetNetwork(
-                      placeholder: "",
-                      placeholderErrorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color:
-                              Theme.of(context).colorScheme.surface.withOpacity(
-                                    0.4,
-                                  ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Icon(
-                                Icons.person_outline,
-                                color: Theme.of(context).colorScheme.primary,
-                                size: 52,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color:
-                              Theme.of(context).colorScheme.surface.withOpacity(
-                                    0.4,
-                                  ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Icon(
-                                Icons.person_outline,
-                                color: Theme.of(context).colorScheme.secondary,
-                                size: 52,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      image: imageFolder,
-                      fit: BoxFit.cover,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(
+                16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: height ?? 64,
+                    width: width ?? 64,
+                    child: ClipOval(
+                      child: FadeInImage.assetNetwork(
+                        placeholder: "",
+                        placeholderErrorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surface
+                                .withOpacity(
+                                  0.4,
+                                ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Icon(
+                                  Icons.person_outline,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 52,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        imageErrorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surface
+                                .withOpacity(
+                                  0.4,
+                                ),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Icon(
+                                  Icons.person_outline,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  size: 52,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        image: imageFolder,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                Text(username),
-              ],
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(username),
+                ],
+              ),
             ),
           ),
         ),
-      ),
+        const Divider(
+          thickness: 0.2,
+        )
+      ],
     );
   }
 }
