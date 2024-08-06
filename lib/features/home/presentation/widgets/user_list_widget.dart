@@ -2,6 +2,7 @@ import 'package:chat/features/home/presentation/cubit/home_cubit.dart';
 import 'package:chat/features/home/presentation/widgets/user_item_widget.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,15 +21,22 @@ Widget buildUserList({required HomeCubit cubit}) {
             if (snapshot.hasError) {
               return const Center(child: Text("Something Went Wrong"));
             }
-            return ListView(
-              children: snapshot.data!
-                  .map(
-                    (e) => buildUserListItem(
-                      user: e,
-                      cubit: cubit,
-                    ),
-                  )
-                  .toList(),
+            return Column(
+              children: [
+                Text(state.currentUser.imageFolder),
+                Expanded(
+                  child: ListView(
+                    children: snapshot.data!
+                        .map(
+                          (e) => buildUserListItem(
+                            user: e,
+                            cubit: cubit,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
             );
           },
         );

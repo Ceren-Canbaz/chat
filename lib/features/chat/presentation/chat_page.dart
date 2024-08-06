@@ -1,5 +1,5 @@
 import 'package:chat/core/widgets/custom_appbar.dart';
-import 'package:chat/core/widgets/user_tile.dart';
+
 import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'package:chat/features/chat/presentation/widgets/chat_input.dart';
@@ -7,10 +7,9 @@ import 'package:chat/features/chat/presentation/widgets/chat_message_list.dart';
 import 'package:chat/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat/features/chat/service/chat_service.dart';
 import 'package:chat/services/injectable/injectable.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatPage extends StatelessWidget {

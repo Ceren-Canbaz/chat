@@ -1,6 +1,7 @@
 import 'package:chat/core/widgets/custom_appbar.dart';
 
 import 'package:chat/features/auth/data/auth_data_source.dart';
+import 'package:chat/features/auth/domain/auth_repository.dart';
 
 import 'package:chat/features/chat/service/chat_service.dart';
 import 'package:chat/features/home/presentation/cubit/home_cubit.dart';
@@ -17,9 +18,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeCubit(
-        authSrc: locator<AuthDataSource>(),
+        authRepository: locator<AuthRepository>(),
         chatService: locator<ChatService>(),
-      ),
+      )..getUser(),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           return Scaffold(
