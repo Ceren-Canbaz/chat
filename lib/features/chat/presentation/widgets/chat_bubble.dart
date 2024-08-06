@@ -1,10 +1,14 @@
 import 'package:chat/core/extensions/date_extensions.dart';
 import 'package:chat/features/chat/data/models/message.dart';
+import 'package:chat/features/chat/presentation/cubit/chat_cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget buildMessageItem(
-    {required DocumentSnapshot doc, required BuildContext context}) {
+    {required DocumentSnapshot doc,
+    required BuildContext context,
+    required ChatCubit cubit}) {
   final data = doc.data() as Message;
 
   return Padding(
@@ -13,7 +17,7 @@ Widget buildMessageItem(
       alignment: data.isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: GestureDetector(
         onLongPressStart: (details) {
-          _showPopupMenu(context, details.globalPosition, doc);
+          _showPopupMenu(context, details.globalPosition, doc, cubit);
         },
         child: Column(
           crossAxisAlignment:
@@ -50,8 +54,8 @@ Widget buildMessageItem(
   );
 }
 
-void _showPopupMenu(
-    BuildContext context, Offset position, DocumentSnapshot doc) {
+void _showPopupMenu(BuildContext context, Offset position, DocumentSnapshot doc,
+    ChatCubit cubit) {
   showMenu(
     context: context,
     position: RelativeRect.fromLTRB(
@@ -67,7 +71,7 @@ void _showPopupMenu(
           title: Text('Edit'),
           onTap: () {
             Navigator.pop(context);
-            _showEditDialog(context, doc);
+            _showEditDialog(context, doc, cubit);
           },
         ),
       ),
@@ -84,7 +88,8 @@ void _showPopupMenu(
   );
 }
 
-void _showEditDialog(BuildContext context, DocumentSnapshot doc) {
+void _showEditDialog(
+    BuildContext context, DocumentSnapshot doc, ChatCubit cubit) {
   final data = doc.data() as Message;
   TextEditingController _controller = TextEditingController(text: data.message);
 
@@ -104,16 +109,22 @@ void _showEditDialog(BuildContext context, DocumentSnapshot doc) {
             },
             child: const Text('Cancel'),
           ),
-          TextButton(
-            onPressed: () {
-              final updatedMessage = _controller.text;
-              FirebaseFirestore.instance
-                  .collection('messages')
-                  .doc(doc.id)
-                  .update({'message': updatedMessage});
-              Navigator.of(context).pop();
-            },
-            child: const Text('Save'),
+          BlocProvider.value(
+            value: cubit,
+            child: BlocBuilder<ChatCubit, ChatState>(
+              builder: (context, state) {
+                return TextButton(
+                  onPressed: () async {
+                    final updatedMessage = _controller.text;
+                    await context.read<ChatCubit>().editMessage(
+                        messageId: doc.id, messageContent: updatedMessage);
+
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Save'),
+                );
+              },
+            ),
           ),
         ],
       );

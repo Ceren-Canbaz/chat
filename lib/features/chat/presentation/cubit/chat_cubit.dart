@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:chat/core/extensions/string_extensions.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'package:chat/features/chat/data/models/message.dart';
 import 'package:chat/features/chat/service/chat_service.dart';
@@ -33,5 +34,22 @@ class ChatCubit extends Cubit<ChatState> {
     final String userId = _authRepository.getCurrentUser()?.uid ?? "";
 
     return _chatService.getMessages(userId: userId, otherUserId: otherUserId);
+  }
+
+  Future<void> editMessage({
+    required String messageId,
+    required String messageContent,
+  }) async {
+    final String userId = _authRepository.getCurrentUser()?.uid ?? "";
+    var ids = [userId, recieverId];
+    final chatRoomId = ids.sortAndJoin();
+    try {
+      await _chatService.editMessage(
+          chatRoomId: chatRoomId,
+          messageId: messageId,
+          newMessageContent: messageContent);
+    } catch (e) {
+      print(e);
+    }
   }
 }

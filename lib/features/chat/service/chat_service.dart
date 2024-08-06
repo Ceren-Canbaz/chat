@@ -1,3 +1,4 @@
+import 'package:chat/core/handlers/repository_executer.dart';
 import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/chat/data/models/message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,12 +16,17 @@ abstract class ChatService {
     required String userId,
     required String otherUserId,
   });
+  Future<void> editMessage(
+      {required String chatRoomId,
+      required String messageId,
+      required String newMessageContent});
 }
 
 @LazySingleton(as: ChatService)
 class ChatServiceImpl implements ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Stream<List<UserApiModel>> getUsersStream() {
     return _firestore.collection("Users").snapshots().map((event) {
@@ -89,5 +95,24 @@ class ChatServiceImpl implements ChatService {
         return {};
       },
     ).snapshots();
+  }
+
+  @override
+  Future<void> editMessage(
+      {required String chatRoomId,
+      required String messageId,
+      required String newMessageContent}) async {
+    try {
+      await _firestore
+          .collection("chat_rooms")
+          .doc(chatRoomId)
+          .collection("messages")
+          .doc(messageId)
+          .update({
+        'message': newMessageContent,
+      });
+    } catch (e) {
+      throw Exception();
+    }
   }
 }

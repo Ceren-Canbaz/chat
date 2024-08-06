@@ -23,9 +23,7 @@ Widget buildMessageList(
             .toList()
             .map(
               (e) => buildMessageItem(
-                doc: e,
-                context: context,
-              ),
+                  doc: e, context: context, cubit: context.read<ChatCubit>()),
             )
             .toList(),
       );
