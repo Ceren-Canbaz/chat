@@ -1,8 +1,12 @@
 import 'package:bloc/bloc.dart';
-import 'package:chat/core/extensions/string_extensions.dart';
+import 'package:chat/core/constants/enums/modal_state_enum.dart';
+import 'package:chat/core/constants/enums/request_enum.dart';
+
+import 'package:chat/core/failures/failures.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
 import 'package:chat/features/chat/data/models/message.dart';
-import 'package:chat/features/chat/data/source/chat_data_source.dart';
+
+import 'package:chat/features/chat/domain/chat_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,22 +14,33 @@ part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final AuthRepository _authRepository;
-  final ChatDataSource _chatService;
+  final ChatRepository _chatRepository;
   final String recieverId;
 
   ChatCubit(
       {required AuthRepository authRepository,
-      required ChatDataSource chatService,
+      required ChatRepository chatRepository,
       required this.recieverId})
       : _authRepository = authRepository,
-        _chatService = chatService,
-        super(
-          ChatInitial(),
-        );
+        _chatRepository = chatRepository,
+        super(ChatState(
+          requestState: RequestState.initial,
+          modalState: ModalState.none,
+          successMessage: "",
+          failure: UnknownFailure(),
+        ));
   Future<void> sendMessage({required String message}) async {
-    try {
-      await _chatService.sendMessage(recieverId: recieverId, message: message);
-    } catch (e) {}
+    final result = await _chatRepository.sendMessage(
+        recieverId: recieverId, message: message);
+    result.fold(
+        (l) => emit(
+              state.copyWith(
+                failure: l,
+                modalState: ModalState.error,
+              ),
+            ), (r) {
+      ///success
+    });
   }
 
   Stream<QuerySnapshot<Message?>> getMessages({
@@ -33,7 +48,8 @@ class ChatCubit extends Cubit<ChatState> {
   }) {
     final String userId = _authRepository.getCurrentUser()?.uid ?? "";
 
-    return _chatService.getMessages(userId: userId, otherUserId: otherUserId);
+    return _chatRepository.getMessages(
+        userId: userId, otherUserId: otherUserId);
   }
 
   Future<void> editMessage({
@@ -42,17 +58,25 @@ class ChatCubit extends Cubit<ChatState> {
   }) async {
     final String userId = _authRepository.getCurrentUser()?.uid ?? "";
 
-    try {
-      await _chatService.editMessage(
-          otherUserId: recieverId,
-          userId: userId,
-          messageId: messageId,
-          newMessageContent: messageContent);
-    } catch (e) {
-      print(e);
-
-      ///implement error handling for ui
-    }
+    final result = await _chatRepository.editMessage(
+        otherUserId: recieverId,
+        userId: userId,
+        messageId: messageId,
+        newMessageContent: messageContent);
+    result.fold(
+        (l) => emit(
+              state.copyWith(
+                failure: l,
+                modalState: ModalState.error,
+              ),
+            ), (r) async {
+      emit(
+        state.copyWith(
+          modalState: ModalState.success,
+          successMessage: "Message Edited Successfully",
+        ),
+      );
+    });
   }
 
   Future<void> deleteMessage({
@@ -60,16 +84,24 @@ class ChatCubit extends Cubit<ChatState> {
   }) async {
     final String userId = _authRepository.getCurrentUser()?.uid ?? "";
 
-    try {
-      await _chatService.deleteMessage(
-        otherUserId: recieverId,
-        userId: userId,
-        messageId: messageId,
+    final result = await _chatRepository.deleteMessage(
+      otherUserId: recieverId,
+      userId: userId,
+      messageId: messageId,
+    );
+    result.fold(
+        (l) => emit(
+              state.copyWith(
+                failure: l,
+                modalState: ModalState.error,
+              ),
+            ), (r) async {
+      emit(
+        state.copyWith(
+          modalState: ModalState.success,
+          successMessage: "Message Deleted Successfully",
+        ),
       );
-    } catch (e) {
-      print(e);
-
-      ///implement error handling for ui
-    }
+    });
   }
 }
