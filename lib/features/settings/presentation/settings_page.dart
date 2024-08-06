@@ -1,5 +1,7 @@
 import 'package:chat/core/constants/enums/modal_state_enum.dart';
 import 'package:chat/core/constants/enums/request_enum.dart';
+import 'package:chat/core/themes/dark_theme.dart';
+import 'package:chat/core/themes/light_theme.dart';
 import 'package:chat/core/widgets/custom_appbar.dart';
 import 'package:chat/features/auth/data/models/user_model.dart';
 import 'package:chat/features/auth/domain/auth_repository.dart';
@@ -11,12 +13,11 @@ import 'package:chat/features/settings/presentation/widgets/information_text.dar
 import 'package:chat/ui/error_dialog.dart';
 import 'package:chat/ui/loading_dialog.dart';
 import 'package:chat/ui/success_dialog.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:chat/services/theme_provider/cubit/theme_cubit.dart'; // ThemeCubit importu
 
 class SettingsPage extends StatelessWidget {
   SettingsPage({super.key, required this.user});
@@ -27,15 +28,15 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SettingsCubit(
-          user: user,
-          authRepo: locator<AuthRepository>(),
-          repo: locator<SettingsRepository>()),
+        user: user,
+        authRepo: locator<AuthRepository>(),
+        repo: locator<SettingsRepository>(),
+      ),
       child: BlocConsumer<SettingsCubit, SettingsState>(
         listener: (context, state) {
           switch (state.modalState) {
             case ModalState.none:
               return;
-
             case ModalState.loading:
               showDialog(
                 barrierDismissible: false,
@@ -158,8 +159,6 @@ class SettingsPage extends StatelessWidget {
                       await context.read<SettingsCubit>().updateUsername(
                             username: username,
                           );
-
-                      ///change username
                     },
                   ),
                   const SizedBox(
@@ -169,6 +168,35 @@ class SettingsPage extends StatelessWidget {
                     title: "Email",
                     subTitle: user.email,
                     allowEdit: false,
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Dark Mode",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                      ),
+                      BlocBuilder<ThemeCubit, ThemeData>(
+                        builder: (context, themeData) {
+                          return Switch(
+                            value: themeData == darkTheme,
+                            inactiveThumbColor:
+                                Theme.of(context).colorScheme.secondary,
+                            onChanged: (value) {
+                              context.read<ThemeCubit>().toggleTheme();
+                            },
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
