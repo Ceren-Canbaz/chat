@@ -54,4 +54,22 @@ class ChatCubit extends Cubit<ChatState> {
       ///implement error handling for ui
     }
   }
+
+  Future<void> deleteMessage({
+    required String messageId,
+  }) async {
+    final String userId = _authRepository.getCurrentUser()?.uid ?? "";
+
+    try {
+      await _chatService.deleteMessage(
+        otherUserId: recieverId,
+        userId: userId,
+        messageId: messageId,
+      );
+    } catch (e) {
+      print(e);
+
+      ///implement error handling for ui
+    }
+  }
 }

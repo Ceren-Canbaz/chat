@@ -79,7 +79,8 @@ void _showPopupMenu(BuildContext context, Offset position, DocumentSnapshot doc,
         child: ListTile(
           leading: Icon(Icons.delete),
           title: Text('Delete'),
-          onTap: () {
+          onTap: () async {
+            await context.read<ChatCubit>().deleteMessage(messageId: doc.id);
             Navigator.pop(context);
           },
         ),
