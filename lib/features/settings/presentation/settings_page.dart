@@ -6,7 +6,7 @@ import 'package:chat/features/settings/domain/settings_repository.dart';
 import 'package:chat/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
-import 'package:chat/features/settings/presentation/information_text.dart';
+import 'package:chat/features/settings/presentation/widgets/information_text.dart';
 
 import 'package:flutter/material.dart';
 

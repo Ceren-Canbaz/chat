@@ -13,6 +13,10 @@ abstract class SettingsDataSource {
     required String userId,
     required XFile imageFile,
   });
+  Future<void> updateUsername({
+    required String userId,
+    required String username,
+  });
 }
 
 @LazySingleton(as: SettingsDataSource)
@@ -31,7 +35,6 @@ class SettingsDataSourceImpl implements SettingsDataSource {
       final file = File(imageFile.path);
 
       if (!await file.exists()) {
-        print('Dosya mevcut değil: ${file.path}');
         return;
       }
 
@@ -44,6 +47,16 @@ class SettingsDataSourceImpl implements SettingsDataSource {
 
       await _firestore.collection('Users').doc(userId).update({
         'imageFolder': downloadUrl,
+      });
+    });
+  }
+
+  @override
+  Future<void> updateUsername(
+      {required String userId, required String username}) async {
+    return _requestHandler.call(() async {
+      await _firestore.collection('Users').doc(userId).update({
+        'username': username,
       });
     });
   }

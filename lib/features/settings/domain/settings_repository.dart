@@ -10,6 +10,8 @@ abstract class SettingsRepository {
     required String userId,
     required XFile imageFile,
   });
+  Future<Either<Failure, void>> updateUsername(
+      {required String userId, required String username});
 }
 
 @LazySingleton(as: SettingsRepository)
@@ -23,6 +25,14 @@ class SettingsRepositoryImpl implements SettingsRepository {
     return await _repositoryExecuter.executeWithError(() async {
       return await _src.uploadProfileImage(
           userId: userId, imageFile: imageFile);
+    });
+  }
+
+  @override
+  Future<Either<Failure, void>> updateUsername(
+      {required String userId, required String username}) async {
+    return await _repositoryExecuter.executeWithError(() async {
+      return _src.updateUsername(userId: userId, username: username);
     });
   }
 }

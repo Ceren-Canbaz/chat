@@ -71,6 +71,8 @@ class _InformationTextFieldState extends State<InformationTextField> {
                 onPressed: widget.onUsernameChanged != null
                     ? () {
                         widget.onUsernameChanged!(controller.text);
+                        isEditMode = false;
+                        setState(() {});
                       }
                     : null,
                 color: Theme.of(context).colorScheme.secondary,

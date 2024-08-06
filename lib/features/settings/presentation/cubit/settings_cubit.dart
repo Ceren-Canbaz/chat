@@ -38,13 +38,14 @@ class SettingsCubit extends Cubit<SettingsState> {
           requestState: RequestState.error,
         ),
       );
-    }, (r) async {});
-    final updatedUser = await _authRepo.getUserDetail();
-    emit(
-      state.copyWith(
-        requestState: RequestState.loaded,
-        user: updatedUser,
-      ),
-    );
+    }, (r) async {
+      final updatedUser = await _authRepo.getUserDetail();
+      emit(
+        state.copyWith(
+          requestState: RequestState.loaded,
+          user: updatedUser,
+        ),
+      );
+    });
   }
 }
