@@ -6,7 +6,7 @@ import 'package:chat/features/settings/domain/settings_repository.dart';
 import 'package:chat/features/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat/services/injectable/injectable.dart';
 import 'package:chat/ui/app_drawer.dart';
-import 'package:chat/ui/information_text.dart';
+import 'package:chat/features/settings/presentation/information_text.dart';
 
 import 'package:flutter/material.dart';
 
@@ -110,10 +110,22 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const InformationText(
-                      title: "Username", subTitle: "Ceren Canbaz"),
-                  const InformationText(
-                      title: "Email", subTitle: "ceren_canbaz@hotmail.com"),
+                  InformationTextField(
+                    title: "Username",
+                    subTitle: user.username,
+                    allowEdit: true,
+                    onUsernameChanged: (username) {
+                      ///change username
+                    },
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  InformationTextField(
+                    title: "Email",
+                    subTitle: user.email,
+                    allowEdit: false,
+                  ),
                 ],
               ),
             ),

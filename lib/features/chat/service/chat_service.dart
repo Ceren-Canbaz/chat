@@ -25,11 +25,7 @@ class ChatServiceImpl implements ChatService {
   Stream<List<UserApiModel>> getUsersStream() {
     return _firestore.collection("Users").snapshots().map((event) {
       return event.docs.map((e) {
-        final user = e.data();
-        return UserApiModel(
-            uid: user["uid"],
-            email: user["email"],
-            imageFolder: user["imageFolder"] ?? "");
+        return UserApiModel.fromFirestore(e);
       }).toList();
     });
   }
@@ -41,7 +37,11 @@ class ChatServiceImpl implements ChatService {
       final String currentUserId = _auth.currentUser!.uid;
       final String currentUserEmail = _auth.currentUser!.email ?? "";
       final UserApiModel user = UserApiModel(
-          uid: currentUserId, email: currentUserEmail, imageFolder: "");
+        uid: currentUserId,
+        email: currentUserEmail,
+        imageFolder: "",
+        username: "",
+      );
       final Timestamp timestamp = Timestamp.now();
       final Message newMessage = Message(
           senderId: user.uid,

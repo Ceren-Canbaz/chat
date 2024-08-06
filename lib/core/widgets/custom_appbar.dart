@@ -5,7 +5,7 @@ class CustomAppBar {
     required BuildContext context,
     required String title,
     Widget? child,
-    VoidCallback? onTap,
+    VoidCallback? allowNavigate,
   }) {
     return AppBar(
       elevation: 0,
@@ -15,14 +15,16 @@ class CustomAppBar {
       shadowColor: Theme.of(context).colorScheme.background,
       foregroundColor: Theme.of(context).colorScheme.primary,
       surfaceTintColor: Theme.of(context).colorScheme.background,
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: const Icon(
-          Icons.arrow_back_ios,
-        ),
-      ),
+      leading: allowNavigate != null
+          ? IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios,
+              ),
+            )
+          : null,
       title: Row(
         children: [
           if (child != null)
