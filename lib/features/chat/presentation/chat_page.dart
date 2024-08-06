@@ -46,7 +46,7 @@ class ChatPage extends StatelessWidget {
                             Icon(
                               Icons.person_outline,
                               color: Theme.of(context).colorScheme.primary,
-                              size: 54,
+                              size: 34,
                             ),
                           ],
                         ),
@@ -61,7 +61,7 @@ class ChatPage extends StatelessWidget {
                             Icon(
                               Icons.person_outline,
                               color: Theme.of(context).colorScheme.primary,
-                              size: 54,
+                              size: 34,
                             ),
                           ],
                         ),

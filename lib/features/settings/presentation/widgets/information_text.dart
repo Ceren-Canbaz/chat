@@ -51,7 +51,7 @@ class _InformationTextFieldState extends State<InformationTextField> {
                 },
                 icon: Icon(
                   Icons.edit,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
           ],

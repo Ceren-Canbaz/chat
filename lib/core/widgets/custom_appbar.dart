@@ -9,8 +9,7 @@ class CustomAppBar {
   }) {
     return AppBar(
       elevation: 0,
-      centerTitle: true,
-      titleSpacing: -8,
+      titleSpacing: 0,
       backgroundColor: Theme.of(context).colorScheme.background,
       shadowColor: Theme.of(context).colorScheme.background,
       foregroundColor: Theme.of(context).colorScheme.primary,
