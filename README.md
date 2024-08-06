@@ -2,7 +2,7 @@
 
 ChatApp is a real-time chat application that utilizes Firebase for backend services, including authentication and database management. The app supports both dark and light themes and provides functionalities for user login and signup.
 
-> **Note:** This is a work in progress. The application is still under development, and some features may be incomplete or subject to change.
+
 
 ## Features
 
